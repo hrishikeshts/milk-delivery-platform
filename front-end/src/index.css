@@ -13,3 +13,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.montserrat {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.comfortaa {
+  font-family: 'Comfortaa', cursive !important;
+}
+
+.blue-bg {
+  background-color: #0078f0 !important;
+  color: #fff !important;
+}
+
+.blue {
+  color: #0078f0 !important;
+}
+
+.dark-blue-bg {
+  background-color: #00376F !important;
+}
+
+.dark-blue {
+  color: #00376F !important;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

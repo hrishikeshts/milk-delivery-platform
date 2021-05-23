@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
+import {BrowserRouter, Switch, Route} from "react-router-dom";
+import RetailerLogin from "./components/RetailerLogin";
 import TitleSVG from './TitleSVG';
+import Login from './components/DistributorLogin';
 import './App.css';
 
 function App() {
@@ -16,13 +18,15 @@ function App() {
   return (
     <div className="Container">
       <div className="App">
-        {loading ? 
-            <TitleSVG /> :
-          <>
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>Edit <code>src/App.js</code> and save to reload.</p>
-          </>
-        } 
+        <BrowserRouter>
+          <Switch>
+            <Route path='/retailer-login' component={RetailerLogin} />
+            {loading ? 
+              <TitleSVG /> :
+              <Login />
+            }
+          </Switch>
+        </BrowserRouter> 
       </div>
     </div>
   );
