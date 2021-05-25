@@ -2,7 +2,7 @@ import React from "react";
 
 export default function TitleSVG() {
     return (
-        <svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
+        <svg viewBox='0 0 100 25' xmlns='http://www.w3.org/2000/svg'>
             <text
                 fill='#0078F0'
                 font-family='Comfortaa, cursive'
@@ -10,7 +10,7 @@ export default function TitleSVG() {
                 text-anchor="middle"
                 font-size="16.1"
                 x='50'
-                y='50'
+                y='15'
             >
                 DairyDash
             </text>
@@ -22,7 +22,7 @@ export default function TitleSVG() {
                 font-size="3.5"
                 letter-spacing="1.75"
                 x='50'
-                y='57'
+                y='23'
             >
                 MILK DELIVERY PLATFORM
             </text>

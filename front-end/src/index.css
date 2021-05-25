@@ -1,60 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', 'Comfortaa', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Montserrat", "Comfortaa",
+        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
 
-.montserrat {
-  font-family: 'Montserrat', sans-serif !important;
+.pointer-events-none {
+    pointer-events: none !important;
 }
 
-.comfortaa {
-  font-family: 'Comfortaa', cursive !important;
+.Montserrat {
+    font-family: "Montserrat", sans-serif !important;
 }
 
-.blue-bg {
-  background-color: #0078f0 !important;
-  color: #fff !important;
+.Comfortaa {
+    font-family: "Comfortaa", cursive !important;
+}
+
+.bg-blue {
+    background-color: #0078f0 !important;
+    color: #fff !important;
 }
 
 .blue {
-  color: #0078f0 !important;
+    color: #0078f0 !important;
 }
 
-.dark-blue-bg {
-  background-color: #00376F !important;
+.bg-dark-blue {
+    background-color: #00376f !important;
 }
 
 .dark-blue {
-  color: #00376F !important;
+    color: #00376f !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.dark-blue-faded {
+    color: #8095a8 !important;
+    font-weight: 400;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.light-bg {
+    background: linear-gradient(
+        180deg,
+        rgba(234, 241, 248, 1) 60%,
+        rgba(234, 241, 248, 0) 100%
+    );
+    border-radius: 50px 50px 0px 0px;
 }
