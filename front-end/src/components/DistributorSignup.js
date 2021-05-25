@@ -4,34 +4,34 @@ import TitleSVG from "../TitleSVG";
 import van from "../graphics/van.svg";
 import shop from "../graphics/shop.svg";
 
-export default function RetailerLogin() {
+export default function DistributorSignup() {
     return (
         <>
             <div className="login-title my-5 mx-auto">
                 <TitleSVG />
             </div>
-            <h4 className="dark-blue mb-3">Log in as</h4>
+            <h4 className="dark-blue mb-3">Sign up as</h4>
             <div className="d-flex justify-content-center Comfortaa mb-4 pb-3">
-                <Link
-                    to="/login/distributor"
-                    draggable="false"
-                    className="btn shadow-btn dark-blue mx-3"
-                >
+                <div className="btn shadow-btn-active bg-blue mx-3">
                     <img
                         src={van}
                         className="mx-1 btn-icon pointer-events-none"
                         alt="Distributor"
                     />
                     <span className="mx-1 align-middle">Distributor</span>
-                </Link>
-                <div className="btn shadow-btn-active bg-blue mx-3">
+                </div>
+                <Link
+                    to="/signup/retailer"
+                    draggable="false"
+                    className="btn shadow-btn dark-blue mx-3"
+                >
                     <img
                         src={shop}
                         className="btn-icon pointer-events-none"
                         alt="Retailer"
                     />
                     <span className="mx-1 align-middle">Retailer</span>
-                </div>
+                </Link>
             </div>
             <div className="light-bg px-4 pt-4 pb-5 fade-in">
                 <form className="form-group bg-white login-form mx-4 my-3 px-4 py-3">
@@ -62,18 +62,18 @@ export default function RetailerLogin() {
                             className="btn mx-auto d-block bg-blue"
                             type="submit"
                         >
-                            Log in
+                            Sign up
                         </button>
                     </div>
                 </form>
                 <h5 className="text-center mt-4 pt-3 dark-blue-faded">
-                    Don't have an account?&nbsp;
+                    Already have an account?&nbsp;
                     <Link
-                        to="/signup/retailer"
+                        to="/login/distributor"
                         draggable="false"
                         className="dark-blue text-decoration-none"
                     >
-                        Sign up
+                        Log in
                     </Link>
                 </h5>
             </div>

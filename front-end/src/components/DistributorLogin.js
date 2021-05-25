@@ -10,7 +10,7 @@ export default function DistributorLogin() {
             <div className="login-title my-5 mx-auto">
                 <TitleSVG />
             </div>
-            <h4 className="dark-blue mb-3">Login as</h4>
+            <h4 className="dark-blue mb-3">Log in as</h4>
             <div className="d-flex justify-content-center Comfortaa mb-4 pb-3">
                 <div className="btn shadow-btn-active bg-blue mx-3">
                     <img
@@ -62,14 +62,14 @@ export default function DistributorLogin() {
                             className="btn mx-auto d-block bg-blue"
                             type="submit"
                         >
-                            Login
+                            Log in
                         </button>
                     </div>
                 </form>
                 <h5 className="text-center mt-4 pt-3 dark-blue-faded">
                     Don't have an account?&nbsp;
                     <Link
-                        to="/signup"
+                        to="/signup/distributor"
                         draggable="false"
                         className="dark-blue text-decoration-none"
                     >

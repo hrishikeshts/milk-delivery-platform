@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import DistributorLogin from "./components/DistributorLogin";
 import RetailerLogin from "./components/RetailerLogin";
+import DistributorSignup from "./components/DistributorSignup";
+import RetailerSignup from "./components/RetailerSignup";
 import TitleSVG from "./TitleSVG";
 import "./App.css";
 
@@ -12,7 +14,7 @@ function App() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 3000);
+        }, 2500);
     }, []);
 
     return (
@@ -39,6 +41,16 @@ function App() {
                                 path="/login/retailer"
                                 exact
                                 component={RetailerLogin}
+                            />
+                            <Route
+                                path="/signup/distributor"
+                                exact
+                                component={DistributorSignup}
+                            />
+                            <Route
+                                path="/signup/retailer"
+                                exact
+                                component={RetailerSignup}
                             />
                         </>
                     )}
