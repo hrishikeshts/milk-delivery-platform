@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import TitleSVG from "../TitleSVG";
 import van from "../graphics/van.svg";
 import shop from "../graphics/shop.svg";
 
 export default function RetailerLogin() {
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    axios
+        .post("http://localhost:4000/login/retailer", {
+            phone: phone,
+            password: password,
+        })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
     return (
         <>
             <div className="login-title my-5 mx-auto">
@@ -34,7 +54,10 @@ export default function RetailerLogin() {
                 </div>
             </div>
             <div className="light-bg px-4 pt-4 pb-5 fade-in">
-                <form className="form-group bg-white login-form mx-4 my-3 px-4 py-3">
+                <form
+                    onSubmit={handleSubmit}
+                    className="form-group bg-white login-form mx-4 my-3 px-4 py-3"
+                >
                     <div className="py-3">
                         <div className="field">
                             <input
@@ -42,6 +65,9 @@ export default function RetailerLogin() {
                                 id="phone"
                                 name="phone"
                                 required
+                                onChange={(e) => {
+                                    setPhone(e.target.value);
+                                }}
                                 className="form-control px-3 mb-3"
                             ></input>
                             <label>Phone number</label>
@@ -52,6 +78,9 @@ export default function RetailerLogin() {
                                 id="pass"
                                 name="password"
                                 required
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                }}
                                 className="form-control px-3 mt-4"
                             ></input>
                             <label>Password</label>
