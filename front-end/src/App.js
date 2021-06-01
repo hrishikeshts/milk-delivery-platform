@@ -14,7 +14,7 @@ function App() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 2500);
+        }, 2000);
     }, []);
 
     return (
@@ -22,9 +22,11 @@ function App() {
             <div className="App user-select-none row">
                 <Switch>
                     {loading ? (
-                        <div className="splash">
-                            <TitleSVG />
-                        </div>
+                        <>
+                            <div className="splash">
+                                <TitleSVG />
+                            </div>
+                        </>
                     ) : (
                         <>
                             <Route

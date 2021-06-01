@@ -10,7 +10,7 @@
     min-height: 100vh;
     align-items: center;
     justify-content: center;
-    align-content: center;
+    align-content: flex-end;
     /* font-size: calc(10px + 2vmin); */
 }
 
@@ -34,16 +34,22 @@
     }
 }
 
+.splash {
+    height: 100vh;
+    display: flex;
+    align-content: center;
+}
+
 .login-title {
     width: 60%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
     .splash {
-        animation-name: title-move;
+        animation-name: title-fade;
         animation-duration: 0.5s;
         animation-timing-function: ease-in-out;
-        animation-delay: 2s;
+        animation-delay: 1.5s;
     }
 
     .fade-in {
@@ -51,12 +57,12 @@
     }
 }
 
-@keyframes title-move {
+@keyframes title-fade {
     from {
-        transform: translateY(0);
+        opacity: 1;
     }
     to {
-        transform: translateY(-254px) scale(0.58, 0.58);
+        opacity: 0;
     }
 }
 
@@ -99,6 +105,13 @@ h4 {
     box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.15);
 }
 
+.form-container {
+    height: 62vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .login-form {
     border-radius: 30px;
     box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.1);
@@ -109,6 +122,8 @@ h4 {
     border: 2px solid #c1e0ff;
     padding-left: 0.74rem !important;
     padding-right: 0.74rem !important;
+    margin-top: 12px !important;
+    height: 38px;
 }
 
 .field input:focus {
@@ -122,7 +137,7 @@ h4 {
 
 .field label {
     position: absolute;
-    top: 9px;
+    top: 8px;
     left: 15px;
     pointer-events: none;
     transition: 0.4s;
@@ -139,6 +154,7 @@ h4 {
     background-color: white;
     padding: 0px 4px;
     transition: 0.4s;
+    border-radius: 3px;
 }
 
 .field button {

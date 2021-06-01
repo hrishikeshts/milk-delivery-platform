@@ -1,8 +1,8 @@
 const express = require("express");
 const mysql = require("mysql");
-const PORT = 4000;
 
 const app = express();
+const PORT = 4000;
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -18,15 +18,7 @@ db.connect((err) => {
     console.log("MySQL connected...");
 });
 
-// Function to create database
-app.get("/createdb", (req, res) => {
-    let sql = "CREATE DATABASE dairydash";
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        res.send(`Database 'dairydash' created...`);
-    });
-});
+require("./sql/create")(app, db); // GET requests to create schemas
 
 app.listen(PORT, () => {
     console.log(`Express app listening on port ${PORT}...`);
