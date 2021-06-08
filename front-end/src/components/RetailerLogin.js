@@ -14,7 +14,7 @@ export default function RetailerLogin() {
     };
 
     axios
-        .post("http://localhost:4000/login/retailer", {
+        .post("login/retailer", {
             phone: phone,
             password: password,
         })
@@ -32,33 +32,18 @@ export default function RetailerLogin() {
             </div>
             <h4 className="dark-blue mb-3 fade-in">Log in as</h4>
             <div className="d-flex justify-content-center Comfortaa mb-3 pb-3 fade-in">
-                <Link
-                    to="/login/distributor"
-                    draggable="false"
-                    className="btn shadow-btn dark-blue mx-3"
-                >
-                    <img
-                        src={van}
-                        className="mx-1 btn-icon pointer-events-none"
-                        alt="Distributor"
-                    />
+                <Link to="/login/distributor" draggable="false" className="btn shadow-btn dark-blue mx-3">
+                    <img src={van} className="mx-1 btn-icon pointer-events-none" alt="Distributor" />
                     <span className="mx-1 align-middle">Distributor</span>
                 </Link>
                 <div className="btn shadow-btn-active bg-blue mx-3">
-                    <img
-                        src={shop}
-                        className="btn-icon pointer-events-none"
-                        alt="Retailer"
-                    />
+                    <img src={shop} className="btn-icon pointer-events-none" alt="Retailer" />
                     <span className="mx-1 align-middle">Retailer</span>
                 </div>
             </div>
             <div className="light-bg form-container py-4 px-3 fade-in">
                 <div>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="form-group bg-white login-form mx-4 mt-3 mb-4 px-4 pt-1 pb-3"
-                    >
+                    <form onSubmit={handleSubmit} className="form-group bg-white login-form mx-4 mt-3 mb-4 px-4 pt-1 pb-3">
                         <div className="py-3">
                             <div className="field">
                                 <input
@@ -88,10 +73,7 @@ export default function RetailerLogin() {
                             </div>
                         </div>
                         <div className="my-1 field">
-                            <button
-                                className="btn mx-auto d-block bg-blue"
-                                type="submit"
-                            >
+                            <button className="btn mx-auto d-block bg-blue" type="submit">
                                 Log in
                             </button>
                         </div>
@@ -99,11 +81,7 @@ export default function RetailerLogin() {
 
                     <h5 className="text-center dark-blue-faded pt-1">
                         Don't have an account?&nbsp;
-                        <Link
-                            to="/signup/distributor"
-                            draggable="false"
-                            className="dark-blue text-decoration-none"
-                        >
+                        <Link to="/signup/distributor" draggable="false" className="dark-blue text-decoration-none">
                             Sign up
                         </Link>
                     </h5>

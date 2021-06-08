@@ -19,6 +19,20 @@ db.connect((err) => {
 });
 
 require("./sql/create")(app, db); // GET requests to create schemas
+require("./sql/region")(app, db); // GET request to insert regions
+
+app.get("/region", (req, res) => {
+    db.query("SELECT * FROM region", (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "Unable to fetch regions" });
+        }
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Express app listening on port ${PORT}...`);

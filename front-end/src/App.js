@@ -5,7 +5,10 @@ import RetailerLogin from "./components/RetailerLogin";
 import DistributorSignup from "./components/DistributorSignup";
 import RetailerSignup from "./components/RetailerSignup";
 import TitleSVG from "./TitleSVG";
+import axios from "axios";
 import "./App.css";
+
+axios.defaults.baseURL = "http://localhost:4000";
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -29,31 +32,11 @@ function App() {
                         </>
                     ) : (
                         <>
-                            <Route
-                                path="/"
-                                exact
-                                component={DistributorLogin}
-                            />
-                            <Route
-                                path="/login/distributor"
-                                exact
-                                component={DistributorLogin}
-                            />
-                            <Route
-                                path="/login/retailer"
-                                exact
-                                component={RetailerLogin}
-                            />
-                            <Route
-                                path="/signup/distributor"
-                                exact
-                                component={DistributorSignup}
-                            />
-                            <Route
-                                path="/signup/retailer"
-                                exact
-                                component={RetailerSignup}
-                            />
+                            <Route path="/" exact component={DistributorLogin} />
+                            <Route path="/login/distributor" exact component={DistributorLogin} />
+                            <Route path="/login/retailer" exact component={RetailerLogin} />
+                            <Route path="/signup/distributor" exact component={DistributorSignup} />
+                            <Route path="/signup/retailer" exact component={RetailerSignup} />
                         </>
                     )}
                 </Switch>

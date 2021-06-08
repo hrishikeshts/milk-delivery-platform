@@ -2,24 +2,30 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TitleSVG from "../TitleSVG";
+import Region from "./RegionSelect";
 import van from "../graphics/van.svg";
 import shop from "../graphics/shop.svg";
 
 export default function RetailerSignup() {
     const [phone, setPhone] = useState("");
+    const [name, setName] = useState("");
+    const [region, setRegion] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
     };
+    const data = {
+        phone: phone,
+        name: name,
+        region: region,
+        password: password,
+        confirmPassword: confirmPassword,
+    };
 
     axios
-        .post("http://localhost:4000/signup/retailer", {
-            phone: phone,
-            password: password,
-            confirmPassword: confirmPassword,
-        })
+        .post("signup/retailer", data)
         .then((res) => {
             console.log(res);
         })
@@ -34,33 +40,18 @@ export default function RetailerSignup() {
             </div>
             <h4 className="dark-blue mb-3 fade-in">Sign up as</h4>
             <div className="d-flex justify-content-center Comfortaa mb-3 pb-3 fade-in">
-                <Link
-                    to="/signup/distributor"
-                    draggable="false"
-                    className="btn shadow-btn dark-blue mx-3"
-                >
-                    <img
-                        src={van}
-                        className="mx-1 btn-icon pointer-events-none"
-                        alt="Distributor"
-                    />
+                <Link to="/signup/distributor" draggable="false" className="btn shadow-btn dark-blue mx-3">
+                    <img src={van} className="mx-1 btn-icon pointer-events-none" alt="Distributor" />
                     <span className="mx-1 align-middle">Distributor</span>
                 </Link>
                 <div className="btn shadow-btn-active bg-blue mx-3">
-                    <img
-                        src={shop}
-                        className="btn-icon pointer-events-none"
-                        alt="Retailer"
-                    />
+                    <img src={shop} className="btn-icon pointer-events-none" alt="Retailer" />
                     <span className="mx-1 align-middle">Retailer</span>
                 </div>
             </div>
             <div className="light-bg form-container py-4 px-3 fade-in">
                 <div>
-                    <form
-                        onSubmit={handleSubmit}
-                        className="form-group bg-white login-form mx-4 mt-3 mb-4 px-4 pt-1 pb-3"
-                    >
+                    <form onSubmit={handleSubmit} className="form-group bg-white login-form mx-4 mt-3 mb-4 px-4 pt-1 pb-3">
                         <div className="py-3">
                             <div className="field">
                                 <input
@@ -82,12 +73,13 @@ export default function RetailerSignup() {
                                     name="name"
                                     required
                                     onChange={(e) => {
-                                        setPhone(e.target.value);
+                                        setName(e.target.value);
                                     }}
                                     className="form-control px-3 mt-3"
                                 ></input>
                                 <label>Full name</label>
                             </div>
+                            <Region setRegion={setRegion} />
                             <div className="field">
                                 <input
                                     type="password"
@@ -97,7 +89,7 @@ export default function RetailerSignup() {
                                     onChange={(e) => {
                                         setPassword(e.target.value);
                                     }}
-                                    className="form-control px-3 mt-4"
+                                    className="form-control px-3 mt-3"
                                 ></input>
                                 <label>Password</label>
                             </div>
@@ -114,36 +106,16 @@ export default function RetailerSignup() {
                                 ></input>
                                 <label>Confirm Password</label>
                             </div>
-                            <div className="field">
-                                <input
-                                    type="password"
-                                    id="pass"
-                                    name="confirm_password"
-                                    required
-                                    onChange={(e) => {
-                                        setConfirmPassword(e.target.value);
-                                    }}
-                                    className="form-control px-3 mt-3"
-                                ></input>
-                                <label>Confirm Password</label>
-                            </div>
                         </div>
                         <div className="my-1 field">
-                            <button
-                                className="btn mx-auto d-block bg-blue"
-                                type="submit"
-                            >
+                            <button className="btn mx-auto d-block bg-blue" type="submit">
                                 Sign up
                             </button>
                         </div>
                     </form>
                     <h5 className="text-center dark-blue-faded pt-1">
                         Already have an account?&nbsp;
-                        <Link
-                            to="/login/retailer"
-                            draggable="false"
-                            className="dark-blue text-decoration-none"
-                        >
+                        <Link to="/login/retailer" draggable="false" className="dark-blue text-decoration-none">
                             Log in
                         </Link>
                     </h5>

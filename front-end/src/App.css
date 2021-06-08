@@ -118,12 +118,16 @@ h4 {
 }
 
 .field input {
-    font-family: "Segoe UI";
     border: 2px solid #c1e0ff;
     padding-left: 0.74rem !important;
     padding-right: 0.74rem !important;
     margin-top: 12px !important;
     height: 38px;
+}
+
+.field input:hover {
+    box-shadow: none;
+    border: 2px solid #7bbdff;
 }
 
 .field input:focus {
@@ -150,7 +154,7 @@ h4 {
 .field input:valid ~ label {
     top: -10px;
     left: 10px;
-    font-size: small;
+    font-size: 13px;
     background-color: white;
     padding: 0px 4px;
     transition: 0.4s;
