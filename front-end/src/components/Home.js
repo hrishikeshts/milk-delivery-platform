@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import TitleSVG from "../TitleSVG";
+import "../Home.css";
 
-export default function DistributorHome({ status, data }) {
+export default function Home({ status, data }) {
     if (status) {
         return (
             <>
+                {/* <Route path="/" exact>
+                    <DistributorHome status={status} data={data} />
+                </Route>
+                <Route path="/" exact>
+                    <RetailerHome status={status} data={data} />
+                </Route> */}
                 <h4 className="dark-blue mb-3 fade-in">Log in as</h4>
                 <div className="d-flex justify-content-center Comfortaa mb-3 pb-2 fade-in">
                     <div className="btn shadow-btn-active bg-blue mx-3">
@@ -51,7 +58,7 @@ export default function DistributorHome({ status, data }) {
                     <div />
                     <div />
                 </div>
-                <div className="login-title mb-3 pb-2 mx-auto fade-in">
+                <div className="footer-title mb-3 pb-2 mx-auto fade-in">
                     <TitleSVG />
                 </div>
             </>

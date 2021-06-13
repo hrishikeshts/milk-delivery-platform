@@ -41,7 +41,7 @@
 }
 
 .login-title {
-    width: 60%;
+    width: 55%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -77,6 +77,14 @@
 
 h4 {
     font-weight: 400;
+}
+
+.button:hover {
+    background-color: #0063c7 !important;
+}
+
+.button:focus {
+    box-shadow: none;
 }
 
 .btn-icon {
@@ -151,7 +159,8 @@ h4 {
 }
 
 .field input:focus ~ label,
-.field input:valid ~ label {
+.field input:valid ~ label,
+.field input.valid ~ label {
     top: -10px;
     left: 10px;
     font-size: 13px;
@@ -161,10 +170,21 @@ h4 {
     border-radius: 3px;
 }
 
+small {
+    font-size: 10px;
+    color: red;
+}
+
 .field button {
     border-radius: 10px;
     padding-left: 33px;
     padding-right: 33px;
+}
+
+.select-input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
 }
 
 .dark-blue-faded a:hover {

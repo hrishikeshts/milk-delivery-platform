@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import axios from "axios";
 
-const options = [
-    { label: "Palayam", value: "Palayam" },
-    { label: "Pattom", value: "Pattom" },
-    { label: "Kazhakkoottam", value: "Kazhakkoottam" },
-    { label: "Sreekaryam", value: "Sreekaryam" },
-];
+export default function Region({ loading, setRegion }) {
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("region")
+            .then((res) => {
+                console.log(res.data);
+                const options = res.data.map((data) => ({
+                    value: data.name,
+                    label: data.name,
+                }));
+                setOptions(options);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
+
+    return <Select options={options} onChange={setRegion} placeholder="Region" styles={customStyles} isSearchable={false} />;
+}
 
 const customStyles = {
     control: (provided, state) => ({
@@ -68,7 +84,3 @@ const customStyles = {
     valueContainer: () => ({}),
     indicatorsContainer: () => ({}),
 };
-
-export default function Region({ setRegion }) {
-    return <Select options={options} onChange={setRegion} placeholder="Region" styles={customStyles} isSearchable={false} />;
-}
