@@ -17,18 +17,28 @@ export default function Region({ loading, setRegion }) {
                 setOptions(options);
             })
             .catch((err) => {
-                console.error(err);
+                console.error(err.response);
             });
     }, []);
 
-    return <Select options={options} onChange={setRegion} placeholder="Region" styles={customStyles} isSearchable={false} />;
+    return (
+        <Select
+            options={options}
+            onChange={setRegion}
+            placeholder='Region'
+            styles={customStyles}
+            isSearchable={false}
+        />
+    );
 }
 
 const customStyles = {
     control: (provided, state) => ({
         ...provided,
         transition: state.isFocused ? "0.4s" : "0.4s",
-        border: state.isFocused ? "2px solid #0078f0 !important" : "2px solid #c1e0ff",
+        border: state.isFocused
+            ? "2px solid #0078f0 !important"
+            : "2px solid #c1e0ff",
         paddingLeft: "0.74rem",
         paddingRight: "0.74rem",
         marginTop: "12px",

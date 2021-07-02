@@ -3,11 +3,14 @@ const jwt = require("jsonwebtoken");
 const verifyToken = (req, res, next) => {
     const token = req.headers["access-token"];
     if (!token) {
-        res.json({ auth: false, message: "Token not found!" });
+        res.status(404).json({ auth: false, message: "Token not found!" });
     } else {
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
             if (err) {
-                res.json({ auth: false, message: "Authentication failed!" });
+                res.status(406).json({
+                    auth: false,
+                    message: "Authentication failed!",
+                });
             } else {
                 req.userData = decoded.userData;
                 next();
@@ -16,4 +19,4 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = { verifyToken };
+module.exports = verifyToken;

@@ -1,34 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const mysql = require("mysql");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const db = require("./db/connect"); // Connection to database
 const auth = require("./routes/auth");
+const verifyToken = require("./controllers/token");
 
-const { verifyToken } = require("./controllers/verifyToken");
 const PORT = 4000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-});
-
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log("MySQL connected...");
-});
-
-auth(app, db, jwt); // POST requests for authentication
-// require("./sql")(app, db); // GET requests to create schemas
+app.use(auth); // POST requests for authentication
 
 app.get("/region", (req, res) => {
     console.log("GET request for regions received...");
@@ -48,7 +31,7 @@ app.get("/region", (req, res) => {
 });
 
 app.get("/status", verifyToken, (req, res) => {
-    res.json({
+    res.status(202).json({
         auth: true,
         message: "You are now authenticated...",
         user: req.userData,
