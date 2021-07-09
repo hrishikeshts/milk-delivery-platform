@@ -19,7 +19,7 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
         e.preventDefault();
 
         axios
-            .post("login/retailer", {
+            .post("/retailer/login", {
                 phone: phone,
                 password: password,
             })

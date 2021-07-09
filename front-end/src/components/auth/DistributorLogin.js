@@ -24,7 +24,7 @@ export default function DistributorLogin({
         e.preventDefault();
 
         axios
-            .post("login/distributor", {
+            .post("/distributor/login", {
                 phone: phone,
                 password: password,
             })

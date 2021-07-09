@@ -54,44 +54,46 @@ export default function App() {
         <div className='Container'>
             <div className='App user-select-none row'>
                 <Switch>
-                    {loading ? (
-                        <div className='splash'>
-                            <TitleSVG />
-                        </div>
-                    ) : status ? (
-                        role ? (
-                            // Route for logged in distributor
-                            <Route path='/' exact>
-                                <DistributorHome {...props} />
-                            </Route>
+                    <>
+                        {loading ? (
+                            <div className='splash'>
+                                <TitleSVG />
+                            </div>
+                        ) : status ? (
+                            role ? (
+                                // Route for logged in distributor
+                                <Route path='/' exact>
+                                    <DistributorHome {...props} />
+                                </Route>
+                            ) : (
+                                // Route for logged in retailer
+                                <Route path='/' exact>
+                                    <RetailerHome {...props} />
+                                </Route>
+                            )
                         ) : (
-                            // Route for logged in retailer
+                            // Route for logged out distributors and retailers
                             <Route path='/' exact>
-                                <RetailerHome {...props} />
+                                <DistributorSignup {...props} />
                             </Route>
-                        )
-                    ) : (
-                        // Route for logged out distributors and retailers
-                        <Route path='/' exact>
+                        )}
+
+                        <Route path='/signup/distributor' exact>
                             <DistributorSignup {...props} />
                         </Route>
-                    )}
 
-                    <Route path='/signup/distributor' exact>
-                        <DistributorSignup {...props} />
-                    </Route>
+                        <Route path='/signup/retailer' exact>
+                            <RetailerSignup {...props} />
+                        </Route>
 
-                    <Route path='/signup/retailer' exact>
-                        <RetailerSignup {...props} />
-                    </Route>
+                        <Route path='/login/distributor' exact>
+                            <DistributorLogin {...props} />
+                        </Route>
 
-                    <Route path='/login/distributor' exact>
-                        <DistributorLogin {...props} />
-                    </Route>
-
-                    <Route path='/login/retailer' exact>
-                        <RetailerLogin {...props} />
-                    </Route>
+                        <Route path='/login/retailer' exact>
+                            <RetailerLogin {...props} />
+                        </Route>
+                    </>
                 </Switch>
             </div>
         </div>
