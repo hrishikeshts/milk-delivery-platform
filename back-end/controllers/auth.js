@@ -1,18 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const db = require("../db/connect");
-
-const queryPromise = (sql, args) => {
-    return new Promise((resolve, reject) => {
-        db.query(sql, args, (err, result) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
-        });
-    });
-};
+const { db, queryPromise } = require("../db/connect");
 
 const DistributorSignup = async (req, res) => {
     try {
@@ -70,6 +58,7 @@ const DistributorSignup = async (req, res) => {
                                 console.log(result);
 
                                 const userData = {
+                                    did: result.insertId,
                                     phone: user.phone,
                                     name: user.name,
                                     region: user.region,
@@ -136,6 +125,15 @@ const RetailerSignup = async (req, res) => {
                                             alert: "Phone number already registered!",
                                         });
                                     }
+                                } else if (
+                                    err.code === "ER_NO_REFERENCED_ROW_2"
+                                ) {
+                                    console.error(
+                                        "No distributor data exists!"
+                                    );
+                                    res.status(409).send(
+                                        "Ask your distributor to register first!"
+                                    );
                                 } else {
                                     console.log(err);
                                     res.status(500);
@@ -148,6 +146,7 @@ const RetailerSignup = async (req, res) => {
                                 console.log(result);
 
                                 const userData = {
+                                    rid: result.insertId,
                                     phone: user.phone,
                                     name: user.name,
                                     region: user.region,

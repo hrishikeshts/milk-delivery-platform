@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import TitleSVG from "../../TitleSVG";
-import van from "../../graphics/van.svg";
-import shop from "../../graphics/shop.svg";
+import van from "../../assets/van.svg";
+import shop from "../../assets/shop.svg";
 
 export default function RetailerLogin({ status, setStatus, setRole, setData }) {
     const [phone, setPhone] = useState("");

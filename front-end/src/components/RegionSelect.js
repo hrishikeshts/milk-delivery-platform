@@ -1,26 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import axios from "axios";
+import React from "react";
+import Select, { components } from "react-select";
 
-export default function Region({ loading, setRegion }) {
-    const [options, setOptions] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get("region")
-            .then((res) => {
-                console.log(res.data);
-                const options = res.data.map((data) => ({
-                    value: data.name,
-                    label: data.name,
-                }));
-                setOptions(options);
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
-    }, []);
-
+export default function Region({ options, setRegion, message }) {
     return (
         <Select
             options={options}
@@ -28,6 +9,15 @@ export default function Region({ loading, setRegion }) {
             placeholder='Region'
             styles={customStyles}
             isSearchable={false}
+            components={{
+                NoOptionsMessage: (props) => {
+                    return (
+                        <components.NoOptionsMessage {...props}>
+                            {message}
+                        </components.NoOptionsMessage>
+                    );
+                },
+            }}
         />
     );
 }

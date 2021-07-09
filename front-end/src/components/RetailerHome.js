@@ -9,8 +9,10 @@ export default function RetailerHome({ status, data }) {
     const [price, setPrice] = useState({ total: 0 });
 
     useEffect(() => {
+        document.title = "Place Upcoming Order – DairyDash";
+
         axios
-            .get("products")
+            .get("/products")
             .then((res) => {
                 console.log(res.data);
                 setProducts(res.data);
@@ -25,7 +27,7 @@ export default function RetailerHome({ status, data }) {
             return setCount((prevCount) => {
                 return {
                     ...prevCount,
-                    [product.name]: 0,
+                    [product.pid]: 0,
                 };
             });
         });
@@ -36,23 +38,24 @@ export default function RetailerHome({ status, data }) {
             return setPrice((prevCount) => {
                 return {
                     ...prevCount,
-                    [product.name]: count[product.name] * product.price,
+                    [product.pid]: count[product.pid] * product.price,
                 };
             });
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
 
-    const confirmOrder = (e) => {
+    const placeOrder = (e) => {
         e.preventDefault();
 
         axios
-            .post("/retailer/order/confirm", { count, price })
+            .post("/retailer/order/confirm", { count, price, rid: data.rid })
             .then((res) => {
                 console.log("Retailer order sent to port 4000...");
+                console.log(res.data);
             })
             .catch((err) => {
-                console.error(err.response);
+                console.error(err.response.data);
             });
     };
 
@@ -78,14 +81,13 @@ export default function RetailerHome({ status, data }) {
                                 <button
                                     className='btn button bg-blue'
                                     onClick={() => {
-                                        if (count[product.name] > 0) {
+                                        if (count[product.pid] > 0) {
                                             setCount((prevCount) => {
                                                 return {
                                                     ...prevCount,
-                                                    [product.name]:
-                                                        prevCount[
-                                                            product.name
-                                                        ] - 1,
+                                                    [product.pid]:
+                                                        prevCount[product.pid] -
+                                                        1,
                                                     total: prevCount.total - 1,
                                                 };
                                             });
@@ -102,17 +104,17 @@ export default function RetailerHome({ status, data }) {
                                 >
                                     -
                                 </button>
-                                <span>{count[product.name]}</span>
+                                <span>{count[product.pid]}</span>
                                 &nbsp;
-                                <span>{price[product.name]}</span>
+                                <span>₹{price[product.pid]}</span>
                                 <button
                                     className='btn button bg-blue'
                                     onClick={() => {
                                         setCount((prevCount) => {
                                             return {
                                                 ...prevCount,
-                                                [product.name]:
-                                                    prevCount[product.name] + 1,
+                                                [product.pid]:
+                                                    prevCount[product.pid] + 1,
                                                 total: prevCount.total + 1,
                                             };
                                         });
@@ -132,11 +134,8 @@ export default function RetailerHome({ status, data }) {
                         );
                     })}
                     <div>{count.total}</div>
-                    <div>{price.total}</div>
-                    <button
-                        className='btn button bg-blue'
-                        onClick={confirmOrder}
-                    >
+                    <div>₹{price.total}</div>
+                    <button className='btn button bg-blue' onClick={placeOrder}>
                         Confirm
                     </button>
                 </div>

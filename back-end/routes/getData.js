@@ -1,9 +1,14 @@
 const express = require("express");
-const { getRegion, getProducts } = require("../controllers/getData");
+const {
+    DistributorRegion,
+    RetailerRegion,
+    getProducts,
+} = require("../controllers/getData");
 
 const router = express.Router();
 
-router.get("/region", getRegion);
+router.get("/distributor/region", DistributorRegion);
+router.get("/retailer/region", RetailerRegion);
 router.get("/products", getProducts);
 
 module.exports = router;

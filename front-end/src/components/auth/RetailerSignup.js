@@ -3,8 +3,8 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import TitleSVG from "../../TitleSVG";
 import Region from "../RegionSelect";
-import van from "../../graphics/van.svg";
-import shop from "../../graphics/shop.svg";
+import van from "../../assets/van.svg";
+import shop from "../../assets/shop.svg";
 
 export default function RetailerSignup({
     status,
@@ -19,9 +19,24 @@ export default function RetailerSignup({
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [alert, setAlert] = useState("");
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         document.title = "Sign Up as Retailer – DairyDash";
+
+        axios
+            .get("/retailer/region")
+            .then((res) => {
+                console.log(res.data);
+                const options = res.data.map((data) => ({
+                    value: data.region,
+                    label: data.region,
+                }));
+                setOptions(options);
+            })
+            .catch((err) => {
+                console.error(err.response);
+            });
     }, []);
 
     const handleSubmit = (e) => {
@@ -52,6 +67,7 @@ export default function RetailerSignup({
                     } else {
                         console.log(res);
                         setData({
+                            rid: res.data.result.insertId,
                             phone: phone,
                             name: name,
                             region: region.value,
@@ -122,7 +138,7 @@ export default function RetailerSignup({
                                             setPhone(e.target.value);
                                         }}
                                         className={`form-control px-3 ${
-                                            password ? "valid" : ""
+                                            phone ? "valid" : ""
                                         }`}
                                     ></input>
                                     <label>Phone number</label>
@@ -140,7 +156,11 @@ export default function RetailerSignup({
                                     ></input>
                                     <label>Full name</label>
                                 </div>
-                                <Region setRegion={setRegion} />
+                                <Region
+                                    options={options}
+                                    setRegion={setRegion}
+                                    message='No regions assigned with distributors!'
+                                />
                                 <input
                                     value={region}
                                     required
@@ -176,7 +196,7 @@ export default function RetailerSignup({
                                             setConfirmPassword(e.target.value);
                                         }}
                                         className={`form-control px-3 ${
-                                            password ? "valid" : ""
+                                            confirmPassword ? "valid" : ""
                                         }`}
                                     ></input>
                                     <label>Confirm Password</label>

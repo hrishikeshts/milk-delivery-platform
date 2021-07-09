@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import TitleSVG from "../TitleSVG";
 import "../styles/home.scss";
 import { IoIosArrowForward } from "react-icons/io";
 
 export default function DistributorHome({ status, data }) {
+  useEffect(() => {
+    document.title = "Next Delivery Info – DairyDash";
+  }, []);
+  
   if (status) {
     return (
       <>

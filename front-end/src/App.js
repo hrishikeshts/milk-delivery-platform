@@ -25,7 +25,7 @@ export default function App() {
         }, 2000);
 
         axios
-            .get("status", {
+            .get("/status", {
                 headers: {
                     "access-token": localStorage.getItem("token"),
                 },

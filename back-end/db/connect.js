@@ -14,4 +14,16 @@ db.connect((err) => {
     console.log("MySQL connected...");
 });
 
-module.exports = db;
+const queryPromise = async (sql, args) => {
+    return new Promise((resolve, reject) => {
+        db.query(sql, args, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+module.exports = { db, queryPromise };

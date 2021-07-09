@@ -38,7 +38,17 @@ INSERT IGNORE INTO product VALUES (1, "Milk", 10), (2, "Curd", 10), (3, "Special
 CREATE TABLE IF NOT EXISTS `order` (
     oid INT AUTO_INCREMENT, 
     rid INT, 
-    date DATE, 
+    date DATE,
+    status INT,
     PRIMARY KEY (oid),
-    FOREIGN KEY (rid) REFERENCES retailer (rid)
+    FOREIGN KEY (rid) REFERENCES retailer (rid),
+    UNIQUE (rid, date)
+);
+
+CREATE TABLE IF NOT EXISTS order_product (
+    oid INT, 
+    pid INT,
+    `count` INT,
+    FOREIGN KEY (oid) REFERENCES `order` (oid),
+    FOREIGN KEY (pid) REFERENCES product (pid)
 );

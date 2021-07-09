@@ -3,8 +3,8 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import TitleSVG from "../../TitleSVG";
 import Region from "../RegionSelect";
-import van from "../../graphics/van.svg";
-import shop from "../../graphics/shop.svg";
+import van from "../../assets/van.svg";
+import shop from "../../assets/shop.svg";
 import "../../styles/auth.scss";
 
 export default function DistributorSignup({
@@ -20,9 +20,24 @@ export default function DistributorSignup({
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [alert, setAlert] = useState("");
+    const [options, setOptions] = useState([]);
 
     useEffect(() => {
         document.title = "Sign Up as Distributor – DairyDash";
+
+        axios
+            .get("/distributor/region")
+            .then((res) => {
+                console.log(res.data);
+                const options = res.data.map((data) => ({
+                    value: data.name,
+                    label: data.name,
+                }));
+                setOptions(options);
+            })
+            .catch((err) => {
+                console.error(err.response);
+            });
     }, []);
 
     const handleSubmit = (e) => {
@@ -53,6 +68,7 @@ export default function DistributorSignup({
                     } else {
                         console.log(res);
                         setData({
+                            did: res.data.result.insertId,
                             phone: phone,
                             name: name,
                             region: region.value,
@@ -141,7 +157,11 @@ export default function DistributorSignup({
                                     ></input>
                                     <label>Full name</label>
                                 </div>
-                                <Region setRegion={setRegion} />
+                                <Region
+                                    options={options}
+                                    setRegion={setRegion}
+                                    message='All regions assigned with distributors!'
+                                />
                                 <input
                                     value={region}
                                     required
@@ -177,7 +197,7 @@ export default function DistributorSignup({
                                             setConfirmPassword(e.target.value);
                                         }}
                                         className={`form-control px-3 ${
-                                            password ? "valid" : ""
+                                            confirmPassword ? "valid" : ""
                                         }`}
                                     ></input>
                                     <label>Confirm Password</label>
