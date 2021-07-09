@@ -1,11 +1,11 @@
-CREATE DATABASE dairydash;
+CREATE DATABASE IF NOT EXISTS dairydash;
 USE dairydash;
 
-CREATE TABLE region (
+CREATE TABLE IF NOT EXISTS region (
     name VARCHAR(255), 
     PRIMARY KEY (name)
 );
-CREATE TABLE distributor (
+CREATE TABLE IF NOT EXISTS  distributor (
     did INT AUTO_INCREMENT, 
     name VARCHAR(255), 
     phone CHAR(10) UNIQUE, 
@@ -14,7 +14,7 @@ CREATE TABLE distributor (
     PRIMARY KEY (did), 
     FOREIGN KEY (region) REFERENCES region (name)
 );
-CREATE TABLE retailer (
+CREATE TABLE IF NOT EXISTS retailer (
     rid INT AUTO_INCREMENT, 
     name VARCHAR(255), 
     phone CHAR(10) UNIQUE, 
@@ -24,6 +24,21 @@ CREATE TABLE retailer (
     FOREIGN KEY (region) REFERENCES distributor (region)
 );
 
-ALTER TABLE distributor ADD CONSTRAINT FOREIGN KEY (region) REFERENCES region(name);
+INSERT IGNORE INTO region (name) VALUES ("Palayam"), ("Pattom"), ("Kazhakkoottam"), ("Sreekaryam");
 
-INSERT INTO region (name) VALUES ("Palayam"), ("Pattom"), ("Kazhakkoottam"), ("Sreekaryam");
+CREATE TABLE IF NOT EXISTS product (
+    pid INT, 
+    name VARCHAR(255) UNIQUE, 
+    price DECIMAL(5,2), 
+    PRIMARY KEY (pid)
+);
+
+INSERT IGNORE INTO product VALUES (1, "Milk", 10), (2, "Curd", 10), (3, "Special Curd", 10);
+
+CREATE TABLE IF NOT EXISTS `order` (
+    oid INT AUTO_INCREMENT, 
+    rid INT, 
+    date DATE, 
+    PRIMARY KEY (oid),
+    FOREIGN KEY (rid) REFERENCES retailer (rid)
+);

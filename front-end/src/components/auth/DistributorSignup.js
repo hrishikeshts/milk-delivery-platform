@@ -33,7 +33,7 @@ export default function DistributorSignup({
             setAlert("Those passwords didn’t match! Try again...");
         } else {
             axios
-                .post("signup/distributor", {
+                .post("/distributor/signup", {
                     phone: phone,
                     name: name,
                     region: region.value,
