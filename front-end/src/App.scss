@@ -1,103 +1,185 @@
 .Container {
-    background-color: #202124;
-    text-align: center;
+  background-color: #202124;
+  text-align: center;
 }
 
 .App {
-    margin: auto;
-    max-width: 425px;
-    background-color: #fff;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    align-content: flex-end;
-    /* font-size: calc(10px + 2vmin); */
+  margin: auto;
+  max-width: 425px;
+  background-color: #fff;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  align-content: flex-end;
+  /* font-size: calc(10px + 2vmin); */
 }
 
 .splash {
-    height: 100vh;
-    display: flex;
-    align-content: center;
+  height: 100vh;
+  display: flex;
+  align-content: center;
 }
 
 .login-title {
-    width: 55%;
+  width: 55%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .splash {
-        animation-name: title-fade;
-        animation-duration: 0.5s;
-        animation-timing-function: ease-in-out;
-        animation-delay: 1.5s;
-    }
+  .splash {
+    animation-name: title-fade;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-delay: 1.5s;
+  }
 
-    .fade-in {
-        animation: fade 0.5s ease-in-out;
-    }
+  .fade-in {
+    animation: fade 0.5s ease-in-out;
+  }
 }
 
 @keyframes title-fade {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 h4 {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .button:hover {
-    background-color: #0063c7 !important;
+  background-color: #0063c7 !important;
 }
 
 .button:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .btn-icon {
-    width: 35px;
+  width: 35px;
 }
 
 .shadow-btn-active {
-    padding: 10px 8px 8px;
-    border-radius: 15px;
-    box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.25);
-    font-size: medium;
+  padding: 10px 8px 8px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.25);
+  font-size: medium;
 }
 
 .shadow-btn-active:focus {
-    box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.35);
+  box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.35);
 }
 
 .shadow-btn {
-    border: 1px solid #c1e0ff;
-    padding: 10px 8px 8px;
-    border-radius: 15px;
-    font-size: medium;
+  border: 1px solid #c1e0ff;
+  padding: 10px 8px 8px;
+  border-radius: 15px;
+  font-size: medium;
 }
 
 .shadow-btn:focus {
-    box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.15);
+  box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.15);
 }
 
 .dark-blue-faded a:hover {
-    text-decoration: underline !important;
+  text-decoration: underline !important;
 }
 
 h5 {
-    font-size: 18px;
-    margin-bottom: 0;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.title-head {
+  display: flex;
+  justify-content: space-between;
+}
+//...................//
+.center-container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.center-container h3 {
+  font-size: 21px;
+  margin: 8px;
+}
+
+.chart-box {
+  height: 210px;
+  width: 210px;
+  align-self: center;
+  margin: 12px;
+}
+
+.items-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 16px 5px;
+}
+
+.items-box {
+  // height: 118px;
+  width: 120px;
+  border-radius: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.items-box p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.items-box h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.items-box text {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.center-container button {
+  border-radius: 12px;
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+  &:hover {
+    color: white;
+  }
+}
+
+.user-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 30px 0 14px 25px;
+}
+
+.user-title h3 {
+  font-size: 22px;
+  margin-bottom: 0.5px;
+}
+
+.user-title h6 {
+  font-size: 15px;
 }
