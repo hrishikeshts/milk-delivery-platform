@@ -129,7 +129,7 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
                         <h5 className='text-center dark-blue-faded'>
                             Don't have an account?&nbsp;
                             <Link
-                                to='/signup/distributor'
+                                to='/signup/retailer'
                                 draggable='false'
                                 className='dark-blue text-decoration-none'
                             >
