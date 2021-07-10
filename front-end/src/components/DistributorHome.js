@@ -75,7 +75,6 @@ export default function DistributorHome({ status, data }) {
             </button>
           </div>
 
-          {/* <h2>Distributor Home</h2> */}
         </div>
         <div className="footer-title mb-3 pb-2 mx-auto fade-in">
           <TitleSVG />
