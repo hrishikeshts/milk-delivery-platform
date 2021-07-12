@@ -24,9 +24,7 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
                 password: password,
             })
             .then((res) => {
-                console.log(
-                    "POST request for retailer login sent to port 4000..."
-                );
+                console.log("POST request for retailer login sent...");
                 if (!res.data.auth) {
                     setAlert(res.data.message);
                     console.log(res.data.message);
@@ -58,24 +56,12 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
                 </div>
                 <h4 className='dark-blue mb-3 fade-in'>Log In as</h4>
                 <div className='d-flex justify-content-center Comfortaa mb-3 pb-2 fade-in'>
-                    <Link
-                        to='/login/distributor'
-                        draggable='false'
-                        className='btn shadow-btn dark-blue mx-3'
-                    >
-                        <img
-                            src={van}
-                            className='mx-1 btn-icon pointer-events-none'
-                            alt='Distributor'
-                        />
+                    <Link to='/login/distributor' draggable='false' className='btn shadow-btn dark-blue mx-3'>
+                        <img src={van} className='mx-1 btn-icon pointer-events-none' alt='Distributor' />
                         <span className='mx-1 align-middle'>Distributor</span>
                     </Link>
                     <div className='btn shadow-btn-active bg-blue mx-3'>
-                        <img
-                            src={shop}
-                            className='btn-icon pointer-events-none'
-                            alt='Retailer'
-                        />
+                        <img src={shop} className='btn-icon pointer-events-none' alt='Retailer' />
                         <span className='mx-1 align-middle'>Retailer</span>
                     </div>
                 </div>
@@ -113,14 +99,9 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
                                     <label>Password</label>
                                 </div>
                             </div>
-                            <small className={alert ? "warning" : "invisible"}>
-                                {alert}&nbsp;
-                            </small>
+                            <small className={alert ? "warning" : "invisible"}>{alert}&nbsp;</small>
                             <div className='mt-1 mb-2 field'>
-                                <button
-                                    className='btn button mx-auto d-block bg-blue'
-                                    type='submit'
-                                >
+                                <button className='btn button mx-auto d-block bg-blue' type='submit'>
                                     Log in
                                 </button>
                             </div>
@@ -128,11 +109,7 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
 
                         <h5 className='text-center dark-blue-faded'>
                             Don't have an account?&nbsp;
-                            <Link
-                                to='/signup/retailer'
-                                draggable='false'
-                                className='dark-blue text-decoration-none'
-                            >
+                            <Link to='/signup/retailer' draggable='false' className='dark-blue text-decoration-none'>
                                 Sign up
                             </Link>
                         </h5>

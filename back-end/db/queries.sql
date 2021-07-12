@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `order` (
     oid INT AUTO_INCREMENT, 
     rid INT, 
     date DATE,
-    status INT,
+    isPlaced TINYINT DEFAULT 1,
+    isDelivered TINYINT,
     PRIMARY KEY (oid),
     FOREIGN KEY (rid) REFERENCES retailer (rid),
     UNIQUE (rid, date)

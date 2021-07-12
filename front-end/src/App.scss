@@ -63,8 +63,8 @@ h4 {
   background-color: #0063c7 !important;
 }
 
-.button:focus {
-  box-shadow: none;
+button:focus {
+  box-shadow: none !important;
 }
 
 .btn-icon {
@@ -158,13 +158,20 @@ h5 {
   font-weight: 600;
 }
 
-.center-container button {
+.center-container button,
+.center-container a {
   border-radius: 12px;
   color: white;
   font-size: 17px;
   font-weight: 500;
   &:hover {
     color: white;
+  }
+}
+
+.center-container {
+  a:hover, .lg-btn:hover {
+    background-color: #002a55 !important;
   }
 }
 

@@ -7,12 +7,7 @@ import van from "../../assets/van.svg";
 import shop from "../../assets/shop.svg";
 import "../../styles/auth.scss";
 
-export default function DistributorSignup({
-    status,
-    setStatus,
-    setRole,
-    setData,
-}) {
+export default function DistributorSignup({ status, setStatus, setRole, setData }) {
     const [phone, setPhone] = useState("");
     const [name, setName] = useState("");
     const [region, setRegion] = useState("");
@@ -55,9 +50,7 @@ export default function DistributorSignup({
                     password: password,
                 })
                 .then((res) => {
-                    console.log(
-                        "POST request for distributor signup sent to port 4000..."
-                    );
+                    console.log("POST request for distributor signup sent...");
                     if (res.data.alert) {
                         console.log(res.data);
                         setAlert(res.data.alert);
@@ -100,23 +93,11 @@ export default function DistributorSignup({
                 <h4 className='dark-blue mb-3 fade-in'>Sign Up as</h4>
                 <div className='d-flex justify-content-center Comfortaa mb-3 pb-2 fade-in'>
                     <div className='btn shadow-btn-active bg-blue mx-3'>
-                        <img
-                            src={van}
-                            className='mx-1 btn-icon pointer-events-none'
-                            alt='Distributor'
-                        />
+                        <img src={van} className='mx-1 btn-icon pointer-events-none' alt='Distributor' />
                         <span className='mx-1 align-middle'>Distributor</span>
                     </div>
-                    <Link
-                        to='/signup/retailer'
-                        draggable='false'
-                        className='btn shadow-btn dark-blue mx-3'
-                    >
-                        <img
-                            src={shop}
-                            className='btn-icon pointer-events-none'
-                            alt='Retailer'
-                        />
+                    <Link to='/signup/retailer' draggable='false' className='btn shadow-btn dark-blue mx-3'>
+                        <img src={shop} className='btn-icon pointer-events-none' alt='Retailer' />
                         <span className='mx-1 align-middle'>Retailer</span>
                     </Link>
                 </div>
@@ -138,9 +119,7 @@ export default function DistributorSignup({
                                         onChange={(e) => {
                                             setPhone(e.target.value);
                                         }}
-                                        className={`form-control px-3 ${
-                                            phone ? "valid" : ""
-                                        }`}
+                                        className={`form-control px-3 ${phone ? "valid" : ""}`}
                                     ></input>
                                     <label>Phone number</label>
                                 </div>
@@ -162,12 +141,7 @@ export default function DistributorSignup({
                                     setRegion={setRegion}
                                     message='All regions assigned with distributors!'
                                 />
-                                <input
-                                    value={region}
-                                    required
-                                    className='select-input'
-                                    onChange={() => {}}
-                                />
+                                <input value={region} required className='select-input' onChange={() => {}} />
                                 <div className='field'>
                                     <input
                                         type='password'
@@ -179,9 +153,7 @@ export default function DistributorSignup({
                                         onChange={(e) => {
                                             setPassword(e.target.value);
                                         }}
-                                        className={`form-control px-3 ${
-                                            password ? "valid" : ""
-                                        }`}
+                                        className={`form-control px-3 ${password ? "valid" : ""}`}
                                     ></input>
                                     <label>Password</label>
                                 </div>
@@ -196,32 +168,21 @@ export default function DistributorSignup({
                                         onChange={(e) => {
                                             setConfirmPassword(e.target.value);
                                         }}
-                                        className={`form-control px-3 ${
-                                            confirmPassword ? "valid" : ""
-                                        }`}
+                                        className={`form-control px-3 ${confirmPassword ? "valid" : ""}`}
                                     ></input>
                                     <label>Confirm Password</label>
                                 </div>
                             </div>
-                            <small className={alert ? "warning" : "invisible"}>
-                                {alert}&nbsp;
-                            </small>
+                            <small className={alert ? "warning" : "invisible"}>{alert}&nbsp;</small>
                             <div className='mt-1 mb-2 field'>
-                                <button
-                                    className='btn button mx-auto d-block bg-blue'
-                                    type='submit'
-                                >
+                                <button className='btn button mx-auto d-block bg-blue' type='submit'>
                                     Sign up
                                 </button>
                             </div>
                         </form>
                         <h5 className='text-center dark-blue-faded'>
                             Already have an account?&nbsp;
-                            <Link
-                                to='/login/distributor'
-                                draggable='false'
-                                className='dark-blue text-decoration-none'
-                            >
+                            <Link to='/login/distributor' draggable='false' className='dark-blue text-decoration-none'>
                                 Log in
                             </Link>
                         </h5>

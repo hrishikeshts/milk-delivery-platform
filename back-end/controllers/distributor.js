@@ -1,36 +1,28 @@
 const { db, queryPromise } = require("../db/connect");
 
-const retailerStatus = async (req, res) => {
+const distributorStatus = async (req, res) => {
     try {
-        // var date = new Date();
-        // var today = `${date.getFullYear()}-${
-        //     date.getMonth() + 1
-        //     }-${date.getDate()}`;
-
-        db.query("SELECT * FROM `order` WHERE rid=? AND date=CURDATE()", [req.params.rid], (err, result) => {
+        db.query("SELECT * FROM `order`", (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500);
             } else if (result.length > 0) {
-                console.log("Retailer has already placed the order!");
-                queryPromise(
-                    "SELECT oid, op.pid, count, name FROM order_product op JOIN product p ON op.pid=p.pid WHERE op.oid=?",
-                    [result[0].oid]
-                )
-                    .then((rows) => {
-                        res.send({
-                            isPlaced: result[0].isPlaced,
-                            message: "Order already placed...",
-                            result: rows,
+                console.log("Order data returned from the order table...");
+                res.send({ orders: result });
+
+                Object.keys(result).map((key) => {
+                    return queryPromise("SELECT * FROM order_product WHERE oid=?", [result[key].oid])
+                        .then((results) => {
+                            console.log("Product count returned from the order_product table...");
+                            console.log(results);
+                        })
+                        .catch((err) => {
+                            throw err;
                         });
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                });
             } else {
                 console.log("Retailer has not placed the order!");
                 res.send({
-                    isPlaced: 0,
                     message: "Order not placed...",
                 });
             }
@@ -104,20 +96,6 @@ const placeOrder = async (req, res) => {
     try {
         const { count, price } = req.body;
 
-        // const start = new Date(2001, 0, 1);
-        // const end = new Date();
-        // const randomDate = new Date(
-        //     start.getTime() + Math.random() * (end.getTime() - start.getTime())
-        // );
-        // const getRandomDate = `${randomDate.getFullYear()}-${
-        //     randomDate.getMonth() + 1
-        // }-${randomDate.getDate()}`;
-        // console.log(getRandomDate);
-
-        // db.query(
-        //     "INSERT INTO `order` (rid, date) VALUES (?, ?)",
-        //     [req.body.rid, getRandomDate],
-
         db.query("INSERT INTO `order` (rid, date) VALUES (?, CURDATE())", [req.body.rid], (err, result) => {
             if (err) {
                 if (err.code === "ER_DUP_ENTRY") {
@@ -156,9 +134,9 @@ const placeOrder = async (req, res) => {
 
 const editOrder = async (req, res) => {
     try {
-        const { rid, count, price, prevOrder } = req.body;
+        const { count, price, prevOrder } = req.body;
 
-        db.query("UPDATE `order` SET isPlaced=3 WHERE (rid=? AND date=CURDATE())", [rid], (err, result) => {
+        db.query("UPDATE `order` SET isPlaced=3 WHERE (rid=? AND date=CURDATE())", [req.body.rid], (err, result) => {
             if (err) {
                 if (err.code === "ER_DUP_ENTRY") {
                     console.error("Entry for the date already edited!");
@@ -174,10 +152,9 @@ const editOrder = async (req, res) => {
                     delete count.total;
                     delete price.total;
                     Object.keys(count).map((key) => {
-                        console.log(prevOrder[key - 1]);
                         return db.query(
-                            "UPDATE order_product SET count=? WHERE (oid=(SELECT oid FROM `order` WHERE (rid=? AND date=CURDATE())) AND pid=?)",
-                            [count[key], rid, key],
+                            "UPDATE order_product SET count=? WHERE (oid=? AND pid=?)",
+                            [count[key], prevOrder[key - 1].oid, key],
                             (err, result) => {
                                 if (err) {
                                     throw err;
@@ -202,7 +179,7 @@ const editOrder = async (req, res) => {
 };
 
 module.exports = {
-    retailerStatus,
+    distributorStatus,
     getDistributor,
     getPrevious,
     placeOrder,

@@ -1,9 +1,12 @@
 const express = require("express");
-const { placeOrder, retailerStatus } = require("../controllers/retailer");
+const { retailerStatus, getDistributor, getPrevious, placeOrder, editOrder } = require("../controllers/retailer");
 
 const router = express.Router();
 
-router.post("/retailer/order/confirm", placeOrder);
-router.get("/retailer/status/:rid", retailerStatus);
+router.get("/r:rid/status", retailerStatus);
+router.get("/r:rid/distributor", getDistributor);
+router.get("/r:rid/previous", getPrevious);
+router.post("/r:rid/order", placeOrder);
+router.post("/r:rid/order/edit", editOrder);
 
 module.exports = router;
