@@ -23,7 +23,7 @@ export default function DistributorSignup({ status, setStatus, setRole, setData 
         axios
             .get("/distributor/region")
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 const options = res.data.map((data) => ({
                     value: data.name,
                     label: data.name,

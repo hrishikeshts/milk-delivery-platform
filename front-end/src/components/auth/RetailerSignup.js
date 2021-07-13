@@ -22,7 +22,7 @@ export default function RetailerSignup({ status, setStatus, setRole, setData }) 
         axios
             .get("/retailer/region")
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 const options = res.data.map((data) => ({
                     value: data.region,
                     label: data.region,
@@ -58,7 +58,7 @@ export default function RetailerSignup({ status, setStatus, setRole, setData }) 
                         console.log(res.data.message);
                         setStatus(false);
                     } else {
-                        console.log(res);
+                        // console.log(res);
                         setData({
                             rid: res.data.result.insertId,
                             phone: phone,

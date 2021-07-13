@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS  distributor (
     region VARCHAR(255) UNIQUE, 
     password VARCHAR(255), 
     PRIMARY KEY (did), 
-    FOREIGN KEY (region) REFERENCES region (name)
+    FOREIGN KEY (region) REFERENCES region (name) ON DELETE NO ACTION
 );
 CREATE TABLE IF NOT EXISTS retailer (
     rid INT AUTO_INCREMENT, 
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS retailer (
     region VARCHAR(255), 
     password VARCHAR(255), 
     PRIMARY KEY (rid), 
-    FOREIGN KEY (region) REFERENCES distributor (region)
+    FOREIGN KEY (region) REFERENCES distributor (region) ON DELETE SET NULL
 );
 
 INSERT IGNORE INTO region (name) VALUES ("Palayam"), ("Pattom"), ("Kazhakkoottam"), ("Sreekaryam");
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS product (
     PRIMARY KEY (pid)
 );
 
-INSERT IGNORE INTO product VALUES (1, "Milk", 10), (2, "Curd", 10), (3, "Special Curd", 10);
+INSERT IGNORE INTO product VALUES (1, "Milk", 24), (2, "Curd", 27), (3, "Special Curd", 35);
 
 CREATE TABLE IF NOT EXISTS `order` (
     oid INT AUTO_INCREMENT, 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `order` (
     isPlaced TINYINT DEFAULT 1,
     isDelivered TINYINT,
     PRIMARY KEY (oid),
-    FOREIGN KEY (rid) REFERENCES retailer (rid),
+    FOREIGN KEY (rid) REFERENCES retailer (rid) ON DELETE CASCADE,
     UNIQUE (rid, date)
 );
 
@@ -50,6 +50,6 @@ CREATE TABLE IF NOT EXISTS order_product (
     oid INT, 
     pid INT,
     `count` INT,
-    FOREIGN KEY (oid) REFERENCES `order` (oid),
-    FOREIGN KEY (pid) REFERENCES product (pid)
+    FOREIGN KEY (oid) REFERENCES `order` (oid) ON DELETE CASCADE,
+    FOREIGN KEY (pid) REFERENCES product (pid) ON DELETE NO ACTION
 );

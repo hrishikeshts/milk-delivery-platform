@@ -41,7 +41,7 @@ export default function RetailerPage({ status, data }) {
         axios
             .get(`/r${data.rid}/previous`)
             .then((res) => {
-                console.log(res.data.result);
+                // console.log(res.data.result);
                 setPrevious(res.data.result);
             })
             .catch((err) => {
