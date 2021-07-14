@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import TitleSVG from "../../TitleSVG";
@@ -6,19 +6,47 @@ import "../../styles/home.scss";
 import { IoIosArrowForward } from "react-icons/io";
 
 export default function DistributorPage({ status, data }) {
+    const [products, setProducts] = useState([]);
+    const [orders, setOrders] = useState({});
+    const [count, setCount] = useState({ total: 0 });
+
     useEffect(() => {
         document.title = "Next Delivery Info – DairyDash";
 
         axios
-            .get(`/d${data.rid}/status`)
+            .get(`/${data.did}/products`)
+            .then((res) => {
+                // console.log(res.data);
+                setProducts(res.data);
+            })
+            .catch((err) => {
+                console.error(err.response);
+            });
+
+        axios
+            .get(`/d${data.did}/status`)
             .then((res) => {
                 console.log(res.data);
+                if (res.data.orders) {
+                    setOrders(res.data.orders);
+                }
             })
             .catch((err) => {
                 console.error(err.response);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        products.map((product) => {
+            return setCount((prevCount) => {
+                return {
+                    ...prevCount,
+                    [product.pid]: 0,
+                };
+            });
+        });
+    }, [products]);
 
     if (status) {
         return (

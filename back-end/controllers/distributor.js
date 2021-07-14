@@ -2,28 +2,17 @@ const { db, queryPromise } = require("../db/connect");
 
 const distributorStatus = async (req, res) => {
     try {
-        db.query("SELECT * FROM `order`", (err, result) => {
+        db.query("SELECT * FROM `order` o, order_product op WHERE o.oid=op.oid AND date=CURDATE()", (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500);
             } else if (result.length > 0) {
-                console.log("Order data returned from the order table...");
+                console.log("Orders from current date returned...");
                 res.send({ orders: result });
-
-                Object.keys(result).map((key) => {
-                    return queryPromise("SELECT * FROM order_product WHERE oid=?", [result[key].oid])
-                        .then((results) => {
-                            console.log("Product count returned from the order_product table...");
-                            console.log(results);
-                        })
-                        .catch((err) => {
-                            throw err;
-                        });
-                });
             } else {
-                console.log("Retailer has not placed the order!");
+                console.log("No order data exists in database!");
                 res.send({
-                    message: "Order not placed...",
+                    message: "No retailers has ordered yet today!",
                 });
             }
         });
