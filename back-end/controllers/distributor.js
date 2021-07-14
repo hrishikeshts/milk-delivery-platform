@@ -2,13 +2,16 @@ const { db, queryPromise } = require("../db/connect");
 
 const distributorStatus = async (req, res) => {
     try {
-        db.query("SELECT * FROM `order` o, order_product op WHERE o.oid=op.oid AND date=CURDATE()", (err, result) => {
+        const rid = "SELECT rid FROM retailer WHERE region=(SELECT region FROM distributor WHERE did=?)";
+        const order =
+            "SELECT * FROM `order` o, order_product op WHERE rid IN (" + rid + ") AND o.oid=op.oid AND date=CURDATE()";
+        db.query(`${rid}; ${order};`, [req.params.did, req.params.did], (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500);
             } else if (result.length > 0) {
                 console.log("Orders from current date returned...");
-                res.send({ orders: result });
+                res.send({ retailers: result[0], orders: result[1] });
             } else {
                 console.log("No order data exists in database!");
                 res.send({

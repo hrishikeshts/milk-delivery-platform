@@ -13,7 +13,8 @@ import "./App.scss";
 axios.defaults.baseURL = "http://localhost:4000";
 
 export default function App() {
-    const [loading, setLoading] = useState(true);
+    const [loadingTime, setLoadingTime] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
 
     const [status, setStatus] = useState(false);
     const [role, setRole] = useState(true);
@@ -21,7 +22,7 @@ export default function App() {
 
     useEffect(() => {
         setTimeout(() => {
-            setLoading(false);
+            setLoadingTime(false);
         }, 2000);
 
         axios
@@ -48,52 +49,50 @@ export default function App() {
             });
     }, []);
 
-    const props = { loading, status, role, data, setStatus, setRole, setData };
+    const props = { loadingData, status, role, data, setLoadingData, setStatus, setRole, setData };
 
     return (
         <div className='Container'>
             <div className='App user-select-none row'>
                 <Switch>
-                    <>
-                        <Route path='/signup/distributor' exact>
-                            <DistributorSignup {...props} />
-                        </Route>
-
-                        <Route path='/signup/retailer' exact>
-                            <RetailerSignup {...props} />
-                        </Route>
-
-                        <Route path='/login/distributor' exact>
-                            <DistributorLogin {...props} />
-                        </Route>
-
-                        <Route path='/login/retailer' exact>
-                            <RetailerLogin {...props} />
-                        </Route>
-
-                        {loading ? (
+                    {loadingTime && loadingData ? (
+                        <Route>
                             <div className='splash'>
                                 <TitleSVG />
                             </div>
-                        ) : status ? (
-                            role ? (
-                                // Route for logged in distributor
-                                <Route path='/'>
-                                    <DistributorPage {...props} />
-                                </Route>
-                            ) : (
-                                // Route for logged in retailer
-                                <Route path='/'>
-                                    <RetailerPage {...props} />
-                                </Route>
-                            )
+                        </Route>
+                    ) : status ? (
+                        role ? (
+                            // Route for logged in distributor
+                            <Route path='/'>
+                                <DistributorPage {...props} />
+                            </Route>
                         ) : (
-                            // Route for logged out distributors and retailers
+                            // Route for logged in retailer
+                            <Route path='/'>
+                                <RetailerPage {...props} />
+                            </Route>
+                        )
+                    ) : (
+                        // Route for logged out distributors and retailers
+                        <Switch>
                             <Route path='/' exact>
                                 <DistributorSignup {...props} />
                             </Route>
-                        )}
-                    </>
+                            <Route path='/signup/distributor' exact>
+                                <DistributorSignup {...props} />
+                            </Route>
+                            <Route path='/signup/retailer' exact>
+                                <RetailerSignup {...props} />
+                            </Route>
+                            <Route path='/login/distributor' exact>
+                                <DistributorLogin {...props} />
+                            </Route>
+                            <Route path='/login/retailer' exact>
+                                <RetailerLogin {...props} />
+                            </Route>
+                        </Switch>
+                    )}
                 </Switch>
             </div>
         </div>
