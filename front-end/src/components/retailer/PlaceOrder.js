@@ -58,9 +58,9 @@ export default function PlaceOrder({
             >
               <h4 className="m-1">{product.name}</h4>
 
-              <div>
+              <div className="items-button-box mt-1">
                 <button
-                  className="btn button bg-blue"
+                  className="btn button bg-blue p-0"
                   onClick={() => {
                     if (count[product.pid] > 0) {
                       setCount((prevCount) => {
@@ -79,13 +79,16 @@ export default function PlaceOrder({
                     }
                   }}
                 >
-                  -
+                  <h4>-</h4>
                 </button>
-                <span>{count[product.pid]}</span>
-                &nbsp;
-                <span>₹{price[product.pid]}</span>
+                <h3 className="d-inline-block my-0 mx-2 px-1 py-1 border border-3 rounded fw-normal">
+                  {count[product.pid]}
+                </h3>
+                {/* <span>{count[product.pid]}</span> */}
+                {/* &nbsp; */}
+                {/* <span>₹{price[product.pid]}</span> */}
                 <button
-                  className="btn button bg-blue"
+                  className="btn button bg-blue p-0"
                   onClick={() => {
                     setCount((prevCount) => {
                       return {
@@ -102,7 +105,7 @@ export default function PlaceOrder({
                     });
                   }}
                 >
-                  +
+                  <h4>+</h4>
                 </button>
               </div>
             </div>
@@ -110,8 +113,11 @@ export default function PlaceOrder({
         })}
       </div>
 
-      <div>{count.total}</div>
-      <div>₹{price.total}</div>
+      {/* <div>{count.total}</div> */}
+      <h5 className="total-text my-1">Total</h5>
+      <div>
+        <h3 className="m-0 fw-normal dark-blue">{"₹" + price.total + ".00"}</h3>
+      </div>
       <div className="mt-3 mb-2">
         <button className="btn button bg-blue px-3" onClick={placeOrder}>
           Confirm
