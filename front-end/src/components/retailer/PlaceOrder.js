@@ -56,11 +56,14 @@ export default function PlaceOrder({
               key={product.pid}
               className="items-order-box bg-white my-2 pt-2 pb-3"
             >
-              <h4 className="m-1">{product.name}</h4>
-
+              <h4 className={"m-1 " + product.name}>{product.name}</h4>
+              {console.log(product.name)}
               <div className="items-button-box mt-1">
                 <button
-                  className="btn button bg-blue p-0"
+                  className={
+                    "btn button bg-blue p-0 bg-" +
+                    product.name.replaceAll(" ", "")
+                  }
                   onClick={() => {
                     if (count[product.pid] > 0) {
                       setCount((prevCount) => {
@@ -81,14 +84,22 @@ export default function PlaceOrder({
                 >
                   <h4>-</h4>
                 </button>
-                <h3 className="d-inline-block my-0 mx-2 px-1 py-1 border border-3 rounded fw-normal">
+                <h3
+                  className={
+                    "my-0 mx-2 px-1 py-1 border-" +
+                    product.name.replaceAll(" ", "")
+                  }
+                >
                   {count[product.pid]}
                 </h3>
                 {/* <span>{count[product.pid]}</span> */}
                 {/* &nbsp; */}
                 {/* <span>₹{price[product.pid]}</span> */}
                 <button
-                  className="btn button bg-blue p-0"
+                  className={
+                    "btn button bg-blue p-0 bg-" +
+                    product.name.replaceAll(" ", "")
+                  }
                   onClick={() => {
                     setCount((prevCount) => {
                       return {

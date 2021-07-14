@@ -27,12 +27,14 @@ code {
   font-family: "Comfortaa", cursive !important;
 }
 
-.bg-blue {
+.bg-blue,
+.bg-Curd {
   background-color: #0078f0 !important;
   color: #fff !important;
 }
 
-.blue {
+.blue,
+.Curd {
   color: #0078f0 !important;
 }
 
@@ -58,10 +60,31 @@ code {
   border-radius: 50px 50px 0px 0px;
 }
 
-.orange {
+.orange,
+.Milk {
   color: #ffa800 !important;
 }
 
-.green {
+.border-Milk {
+  border-color: #ffa800 !important;
+}
+
+.bg-Milk {
+  background-color: #ffa800 !important;
+}
+
+.border-Curd {
+  border-color: #0078f0 !important;
+}
+.green,
+.Special {
   color: #15bd15 !important;
+}
+
+.border-SpecialCurd {
+  border-color: #15bd15 !important;
+}
+
+.bg-SpecialCurd {
+  background-color: #15bd15 !important;
 }
