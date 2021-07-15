@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
 import PrevOrder from "./PrevOrder";
 import PlaceOrder from "./PlaceOrder";
@@ -120,21 +120,36 @@ export default function RetailerPage({ status, data }) {
                 </div>
                 <div className='light-bg center-container py-4 px-3 fade-in'>
                     {previous ? (
-                        <Route path='/' exact>
-                            <PrevOrder {...props} />
-                        </Route>
+                        <Switch>
+                            <Route path='/' exact>
+                                <PrevOrder {...props} />
+                            </Route>
+                            <Route path={["/signup/retailer", "/login/retailer"]}>
+                                <Redirect to='/' />
+                            </Route>
+                        </Switch>
                     ) : (
                         <Redirect to='/order' />
                     )}
 
                     {isPlaced === 0 || isPlaced === 2 ? (
-                        <Route path='/order' exact>
-                            <PlaceOrder {...props} />
-                        </Route>
+                        <Switch>
+                            <Route path='/order' exact>
+                                <PlaceOrder {...props} />
+                            </Route>
+                            <Route path={["/signup/retailer", "/login/retailer"]}>
+                                <Redirect to='/order' />
+                            </Route>
+                        </Switch>
                     ) : isPlaced === 1 || isPlaced === 3 ? (
-                        <Route path='/order' exact>
-                            <CurrentOrder {...props} />
-                        </Route>
+                        <Switch>
+                            <Route path='/order' exact>
+                                <CurrentOrder {...props} />
+                            </Route>
+                            <Route path={["/signup/retailer", "/login/retailer"]}>
+                                <Redirect to='/order' />
+                            </Route>
+                        </Switch>
                     ) : (
                         <></>
                     )}

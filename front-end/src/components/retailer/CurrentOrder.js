@@ -10,7 +10,7 @@ export default function CurrentOrder({ order, products, count, isPlaced, setIsPl
     return (
         <>
             <h3 className='blue'>Current Order Summary</h3>
-            {order
+            {order && isPlaced !== 3
                 ? order.map((product) => {
                       return (
                           <div key={product.pid}>

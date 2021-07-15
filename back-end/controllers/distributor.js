@@ -1,7 +1,8 @@
-const { db, queryPromise } = require("../db/connect");
+const { db } = require("../db/connect");
 
 const distributorStatus = async (req, res) => {
     try {
+        console.log(req.params.did);
         const rid = "SELECT rid FROM retailer WHERE region=(SELECT region FROM distributor WHERE did=?)";
         const order =
             "SELECT * FROM `order` o, order_product op WHERE rid IN (" + rid + ") AND o.oid=op.oid AND date=CURDATE()";
@@ -44,44 +45,6 @@ const getDistributor = async (req, res) => {
             }
         }
     );
-};
-
-const getPrevious = async (req, res) => {
-    try {
-        db.query(
-            "SELECT * FROM `order` WHERE rid=? AND date=SUBDATE(CURDATE(), 1)",
-            [req.params.rid],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500);
-                } else if (result.length > 0) {
-                    console.log("Previous order returned from order table...");
-                    queryPromise(
-                        "SELECT oid, op.pid, count, name FROM order_product op JOIN product p ON op.pid=p.pid WHERE op.oid=?",
-                        [result[0].oid]
-                    )
-                        .then((rows) => {
-                            res.send({
-                                message: "Previous order sent...",
-                                result: rows,
-                            });
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                } else {
-                    console.log("No previous order exists!");
-                    res.send({
-                        message: "Place your first order",
-                    });
-                }
-            }
-        );
-    } catch {
-        res.status(500);
-        console.log("Server Error!");
-    }
 };
 
 const placeOrder = async (req, res) => {
@@ -173,7 +136,6 @@ const editOrder = async (req, res) => {
 module.exports = {
     distributorStatus,
     getDistributor,
-    getPrevious,
     placeOrder,
     editOrder,
 };

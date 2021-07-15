@@ -13,8 +13,7 @@ import "./App.scss";
 axios.defaults.baseURL = "http://localhost:4000";
 
 export default function App() {
-    const [loadingTime, setLoadingTime] = useState(true);
-    const [loadingData, setLoadingData] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const [status, setStatus] = useState(false);
     const [role, setRole] = useState(true);
@@ -22,7 +21,7 @@ export default function App() {
 
     useEffect(() => {
         setTimeout(() => {
-            setLoadingTime(false);
+            setLoading(false);
         }, 2000);
 
         axios
@@ -32,7 +31,7 @@ export default function App() {
                 },
             })
             .then((res) => {
-                // console.log(res);
+                // console.log(res.data);
                 if (res.data.auth) {
                     setStatus(true);
                     setData(res.data.user);
@@ -49,13 +48,13 @@ export default function App() {
             });
     }, []);
 
-    const props = { loadingData, status, role, data, setLoadingData, setStatus, setRole, setData };
+    const props = { status, role, data, setStatus, setRole, setData };
 
     return (
         <div className='Container'>
             <div className='App user-select-none row'>
                 <Switch>
-                    {loadingTime && loadingData ? (
+                    {loading ? (
                         <Route>
                             <div className='splash'>
                                 <TitleSVG />

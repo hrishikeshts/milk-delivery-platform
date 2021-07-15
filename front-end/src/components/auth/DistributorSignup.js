@@ -59,7 +59,7 @@ export default function DistributorSignup({ status, setStatus, setRole, setData 
                         console.log(res.data.message);
                         setStatus(false);
                     } else {
-                        console.log(res);
+                        // console.log(res.data);
                         setData({
                             did: res.data.result.insertId,
                             phone: phone,
