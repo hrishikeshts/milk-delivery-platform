@@ -2,24 +2,29 @@ const { db } = require("../db/connect");
 
 const distributorStatus = async (req, res) => {
     try {
-        console.log(req.params.did);
-        const rid = "SELECT rid FROM retailer WHERE region=(SELECT region FROM distributor WHERE did=?)";
-        const order =
-            "SELECT * FROM `order` o, order_product op WHERE rid IN (" + rid + ") AND o.oid=op.oid AND date=CURDATE()";
-        db.query(`${rid}; ${order};`, [req.params.did, req.params.did], (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500);
-            } else if (result.length > 0) {
-                console.log("Orders from current date returned...");
-                res.send({ retailers: result[0], orders: result[1] });
-            } else {
-                console.log("No order data exists in database!");
-                res.send({
-                    message: "No retailers has ordered yet today!",
-                });
+        console.log(req.params);
+        const region = "SELECT region FROM distributor WHERE did=?";
+        const retailer = `SELECT rid FROM retailer WHERE region=(${region})`;
+        const order = `SELECT * FROM \`order\` WHERE rid IN (${retailer}) AND date=CURDATE()`;
+        const count = `SELECT * FROM \`order\` o, order_product op WHERE rid IN (${retailer}) AND o.oid=op.oid AND date=CURDATE()`;
+        db.query(
+            `SELECT rid, name, phone FROM retailer WHERE region=(${region}); ${order}; ${count};`,
+            [req.params.did, req.params.did, req.params.did],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500);
+                } else if (result.length > 0) {
+                    console.log("Orders from current date returned...");
+                    res.send({ retailers: result[0], orderDetails: result[1], orders: result[2] });
+                } else {
+                    console.log("No order data exists in database!");
+                    res.send({
+                        message: "No retailers has ordered yet today!",
+                    });
+                }
             }
-        });
+        );
     } catch {
         res.status(500);
         console.log("Server Error!");

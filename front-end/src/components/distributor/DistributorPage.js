@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
+import Status from "./Status";
+import Delivery from "./Delivery";
 import TitleSVG from "../../TitleSVG";
 import "../../styles/home.scss";
-import { IoIosArrowForward } from "react-icons/io";
 
 export default function DistributorPage({ status, data }) {
     const [products, setProducts] = useState([]);
+    const [retailers, setRetailers] = useState([]);
     const [retailerCount, setRetailerCount] = useState({});
-    const [orders, setOrders] = useState({});
-    const [count, setCount] = useState({ total: 0 });
+    const [orderDetails, setOrderDetails] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [orderCount, setOrderCount] = useState({ total: 0 });
 
     useEffect(() => {
         document.title = "Next Delivery Info – DairyDash";
@@ -35,7 +38,8 @@ export default function DistributorPage({ status, data }) {
                         total: res.data.retailers.length,
                     };
                 });
-                // console.log(res.data.orders);
+                setRetailers(res.data.retailers);
+                setOrderDetails(res.data.orderDetails);
                 setOrders(res.data.orders);
             })
             .catch((err) => {
@@ -46,7 +50,7 @@ export default function DistributorPage({ status, data }) {
 
     useEffect(() => {
         products.map((product) => {
-            setCount((prevCount) => {
+            setOrderCount((prevCount) => {
                 return {
                     ...prevCount,
                     [product.pid]: 0,
@@ -62,24 +66,31 @@ export default function DistributorPage({ status, data }) {
 
         if (orders.length > 0) {
             var totalCount = orders.reduce((prev, cur) => prev + cur.count, 0);
-            setCount((prevCount) => {
+            setOrderCount((prevCount) => {
                 return { ...prevCount, total: totalCount };
             });
 
             orders.map((order) => {
-                setCount((prevCount) => {
+                setOrderCount((prevCount) => {
                     return { ...prevCount, [order.pid]: prevCount[order.pid] + order.count };
                 });
                 return setRetailerCount((prevCount) => {
                     return { ...prevCount, [order.pid]: prevCount[order.pid] + (order.count > 0) };
                 });
             });
-
-            setRetailerCount((prevCount) => {
-                return { ...prevCount, ordered: orders.filter((order) => order.count > 0).length / products.length };
-            });
         }
     }, [orders, products]);
+
+    useEffect(() => {
+        setRetailerCount((prevCount) => {
+            return {
+                ...prevCount,
+                ordered: orderDetails.filter((orderDetail) => orderDetail.amount > 0).length,
+            };
+        });
+    }, [orderDetails]);
+
+    const props = { products, retailers, retailerCount, orderDetails, orders, orderCount };
 
     if (status) {
         return (
@@ -101,45 +112,20 @@ export default function DistributorPage({ status, data }) {
                     </div>
                 </div>
                 <div className="light-bg center-container py-4 px-3 fade-in">
-                    <h3 className="blue">Next Delivery Info</h3>
-                    <div className="chart-box bg-white login-form">
-                        <div>Total Retailers: {retailerCount.total}</div>
-                        <div>Retailers confirmed: {orders.length / products.length}</div>
-                        <div>Retailers ordered: {retailerCount.ordered}</div>
-                        <div>Total Count: {count.total}</div>
-                    </div>
-                    <div className="items-container">
-                        {products.map((product, key) => {
-                            return (
-                                <div
-                                    key={product.pid}
-                                    className={`items-box bg-white login-form px-3 py-2 ${product.name}`}
-                                >
-                                    <h6 className="m-0">{product.name}</h6>
-                                    <h3>{count[key + 1]}</h3>
-                                    <p>packs for</p>
-                                    <p>
-                                        <text>{retailerCount[key + 1]}</text> retailers
-                                    </p>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className="mt-3 mb-2">
-                        <button className="btn button bg-blue px-3" type="submit">
-                            Share as Report
-                        </button>
-                    </div>
-
-                    <div className="mt-3 mb-2">
-                        <button className="btn bg-dark-blue py-2 pe-2 ps-3" type="submit">
-                            Start Delivering
-                            <div className="d-inline-block ps-5">
-                                <IoIosArrowForward size="18px" />
-                            </div>
-                        </button>
-                    </div>
+                    <Switch>
+                        <Route path="/" exact>
+                            <Status {...props} />
+                        </Route>
+                        <Route path="/delivery" exact>
+                            <Delivery {...props} />
+                        </Route>
+                        <Route path="/deliver*">
+                            <Redirect to="/delivery" />
+                        </Route>
+                        <Route path="*">
+                            <Redirect to="/" />
+                        </Route>
+                    </Switch>
                 </div>
                 <div className="footer-title mb-3 pb-2 mx-auto fade-in">
                     <TitleSVG />

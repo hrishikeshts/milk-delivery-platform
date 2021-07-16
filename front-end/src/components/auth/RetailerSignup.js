@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import TitleSVG from "../../TitleSVG";
-import Region from "../RegionSelect";
+import Region from "./RegionSelect";
 import van from "../../assets/van.svg";
 import shop from "../../assets/shop.svg";
 
@@ -17,21 +17,28 @@ export default function RetailerSignup({ status, setStatus, setRole, setData }) 
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
+        let unmounted = false;
         document.title = "Sign Up as Retailer – DairyDash";
 
         axios
             .get("/retailer/region")
             .then((res) => {
                 // console.log(res.data);
-                const options = res.data.map((data) => ({
-                    value: data.region,
-                    label: data.region,
-                }));
-                setOptions(options);
+                if (!unmounted) {
+                    const options = res.data.map((data) => ({
+                        value: data.region,
+                        label: data.region,
+                    }));
+                    setOptions(options);
+                }
             })
             .catch((err) => {
                 console.error(err.response);
             });
+
+        return () => {
+            unmounted = true;
+        };
     }, []);
 
     const handleSubmit = (e) => {

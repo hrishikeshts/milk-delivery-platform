@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import TitleSVG from "../../TitleSVG";
-import Region from "../RegionSelect";
+import Region from "./RegionSelect";
 import van from "../../assets/van.svg";
 import shop from "../../assets/shop.svg";
 import "../../styles/auth.scss";
@@ -18,21 +18,28 @@ export default function DistributorSignup({ status, setStatus, setRole, setData 
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
+        let unmounted = false;
         document.title = "Sign Up as Distributor – DairyDash";
 
         axios
             .get("/distributor/region")
             .then((res) => {
                 // console.log(res.data);
-                const options = res.data.map((data) => ({
-                    value: data.name,
-                    label: data.name,
-                }));
-                setOptions(options);
+                if (!unmounted) {
+                    const options = res.data.map((data) => ({
+                        value: data.name,
+                        label: data.name,
+                    }));
+                    setOptions(options);
+                }
             })
             .catch((err) => {
                 console.error(err.response);
             });
+
+        return () => {
+            unmounted = true;
+        };
     }, []);
 
     const handleSubmit = (e) => {

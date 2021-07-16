@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `order` (
     rid INT, 
     date DATE,
     isPlaced TINYINT DEFAULT 1,
+    amount DECIMAL(5,2), 
     isDelivered TINYINT,
     PRIMARY KEY (oid),
     FOREIGN KEY (rid) REFERENCES retailer (rid) ON DELETE CASCADE,
