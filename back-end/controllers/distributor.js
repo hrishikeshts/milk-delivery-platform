@@ -31,59 +31,16 @@ const distributorStatus = async (req, res) => {
     }
 };
 
-const getDistributor = async (req, res) => {
-    console.log("GET request for distributor data received...");
-
-    db.query(
-        "SELECT did, name, phone FROM distributor WHERE region=(SELECT region FROM retailer WHERE rid=?)",
-        [req.params.rid],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500);
-            } else if (result.length > 0) {
-                console.log("Distributor data sent...");
-                res.send(result);
-            } else {
-                console.log("Couldn't get distributor data!");
-                res.status(404);
-            }
-        }
-    );
-};
-
-const placeOrder = async (req, res) => {
+const setDelivery = async (req, res) => {
     try {
-        const { count, price } = req.body;
-
-        db.query("INSERT INTO `order` (rid, date) VALUES (?, CURDATE())", [req.body.rid], (err, result) => {
+        console.log(req.body.value);
+        db.query("UPDATE `order` SET isDelivered=? WHERE oid=?", [req.body.value, req.params.oid], (err, result) => {
             if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    console.error("Entry for the date already inserted!");
-                    res.status(409).send("Order already placed!");
-                } else {
-                    throw err;
-                }
+                throw err;
             } else {
-                console.log("Data inserted into order table...");
-                res.status(201).send({ isPlaced: 1, message: "Retailer order placed..." });
-                const oid = result.insertId;
-                delete count.total;
-                delete price.total;
-                Object.keys(count).map((key) => {
-                    return db.query(
-                        "INSERT INTO order_product VALUES (?,?,?)",
-                        [oid, key, count[key]],
-                        (err, result) => {
-                            if (err) {
-                                throw err;
-                            } else {
-                                console.log("Data inserted to order_products table...");
-                                console.log(result);
-                            }
-                        }
-                    );
-                });
+                console.log("Status updated in order table...");
+                console.log(result.message);
+                res.status(202).send({ message: "Delivery Status updated..." });
             }
         });
     } catch {
@@ -92,55 +49,4 @@ const placeOrder = async (req, res) => {
     }
 };
 
-const editOrder = async (req, res) => {
-    try {
-        const { count, price, prevOrder } = req.body;
-
-        db.query("UPDATE `order` SET isPlaced=3 WHERE (rid=? AND date=CURDATE())", [req.body.rid], (err, result) => {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    console.error("Entry for the date already edited!");
-                    res.status(409).send("Order already edited!");
-                } else {
-                    throw err;
-                }
-            } else {
-                if (result.changedRows) {
-                    console.log("Data updated in order table...");
-                    console.log(result);
-                    res.status(201).send({ isPlaced: 3, message: "Retailer order updated..." });
-                    delete count.total;
-                    delete price.total;
-                    Object.keys(count).map((key) => {
-                        return db.query(
-                            "UPDATE order_product SET count=? WHERE (oid=? AND pid=?)",
-                            [count[key], prevOrder[key - 1].oid, key],
-                            (err, result) => {
-                                if (err) {
-                                    throw err;
-                                } else {
-                                    console.log("Data updated in order_products table...");
-                                    console.log(result);
-                                }
-                            }
-                        );
-                    });
-                } else {
-                    console.log("Couldn't update data in order table...");
-                    console.log(result);
-                    res.status(403).send({ isPlaced: 3, message: "Retailer order already updated..." });
-                }
-            }
-        });
-    } catch {
-        res.status(500);
-        console.log("Server Error!");
-    }
-};
-
-module.exports = {
-    distributorStatus,
-    getDistributor,
-    placeOrder,
-    editOrder,
-};
+module.exports = { distributorStatus, setDelivery };
