@@ -46,17 +46,25 @@ export default function PlaceOrder({
 
   return (
     <>
-      <h3 className="blue">{isPlaced === 0 ? "Place Upcoming Order" : "Edit Current Order"}</h3>
+      <h3 className="blue">
+        {isPlaced === 0 ? "Place Upcoming Order" : "Edit Current Order"}
+      </h3>
 
       <div className="items-order-container">
         {products.map((product) => {
           return (
-            <div key={product.pid} className="items-order-box bg-white my-2 pt-2 pb-3">
+            <div
+              key={product.pid}
+              className="items-order-box bg-white my-2 pt-2 pb-3"
+            >
               <h4 className={"m-1 " + product.name}>{product.name}</h4>
               {console.log(product.name)}
               <div className="items-button-box mt-1">
                 <button
-                  className={"btn button bg-blue p-0 bg-" + product.name.replaceAll(" ", "")}
+                  className={
+                    "btn button bg-blue p-0 bg-" +
+                    product.name.replaceAll(" ", "")
+                  }
                   onClick={() => {
                     if (count[product.pid] > 0) {
                       setCount((prevCount) => {
@@ -77,14 +85,22 @@ export default function PlaceOrder({
                 >
                   <h4>-</h4>
                 </button>
-                <h3 className={"my-0 mx-2 px-1 py-1 border-" + product.name.replaceAll(" ", "")}>
+                <h3
+                  className={
+                    "my-0 mx-2 px-1 py-1 border-" +
+                    product.name.replaceAll(" ", "")
+                  }
+                >
                   {count[product.pid]}
                 </h3>
                 {/* <span>{count[product.pid]}</span> */}
                 {/* &nbsp; */}
                 {/* <span>₹{price[product.pid]}</span> */}
                 <button
-                  className={"btn button bg-blue p-0 bg-" + product.name.replaceAll(" ", "")}
+                  className={
+                    "btn button bg-blue p-0 bg-" +
+                    product.name.replaceAll(" ", "")
+                  }
                   onClick={() => {
                     setCount((prevCount) => {
                       return {
@@ -121,7 +137,11 @@ export default function PlaceOrder({
       </div>
       <div className="mt-3 mb-2">
         {previous ? (
-          <Link to="/" className="btn bg-dark-blue py-2 pe-2 ps-3" type="submit">
+          <Link
+            to="/"
+            className="btn bg-dark-blue py-2 pe-2 ps-3"
+            type="submit"
+          >
             Show Previous Order
             <div className="d-inline-block ps-5">
               <IoIosArrowForward size="18px" />

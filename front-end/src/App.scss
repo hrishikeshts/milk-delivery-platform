@@ -120,8 +120,8 @@ h5 {
 }
 
 .chart-box {
-  height: 210px;
-  width: 210px;
+  height: 200px;
+  width: 200px;
   align-self: center;
   margin: 12px;
 }
@@ -192,6 +192,17 @@ h5 {
   font-size: 15px;
 }
 
+.order-items-number {
+  font-size: 33px;
+  font-weight: 600;
+}
+
+.order-items-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #859bb0;
+}
+
 ////Retailers-Order page
 
 .items-order-container {
@@ -238,4 +249,26 @@ h5 {
   font-size: 17px;
   font-weight: 400;
   color: #939393;
+}
+
+////delivery page
+
+.product-chart-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.stores-order-box {
+  // height: 120px;
+  width: 350px;
+  border-radius: 14px;
+  // display: flex;
+  // flex-direction: ;
+  box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.1);
+}
+
+.store-name {
+  font-size: 18px;
+  font-weight: 500;
 }
