@@ -68,11 +68,11 @@ const customStyles = {
     control: (provided, state) => ({
         ...provided,
         border: "none",
-        paddingLeft: "0.74rem",
-        paddingRight: "0.74rem",
-        marginTop: "12px",
-        height: "38px",
+        paddingLeft: "1rem",
         boxShadow: "none",
     }),
     indicatorsContainer: () => ({}),
+    Menu: (provided, state) => ({
+        ...provided,
+    }),
 };
