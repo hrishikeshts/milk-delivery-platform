@@ -81,6 +81,7 @@ const getPrevious = async (req, res) => {
                             res.send({
                                 message: "Previous order sent...",
                                 result: rows,
+                                isDelivered: result[0].isDelivered,
                             });
                         })
                         .catch((err) => {

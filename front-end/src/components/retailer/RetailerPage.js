@@ -42,7 +42,7 @@ export default function RetailerPage({ status, data }) {
             .get(`/r${data.rid}/previous`)
             .then((res) => {
                 // console.log(res.data.result);
-                setPrevious(res.data.result);
+                setPrevious(res.data);
             })
             .catch((err) => {
                 console.error(err.response);
@@ -102,14 +102,14 @@ export default function RetailerPage({ status, data }) {
     if (status) {
         return (
             <>
-                <div className='title-head fade-in'>
-                    <div className='user-title'>
-                        <h3 className='dark-blue Comfortaa'>{data.name}</h3>
-                        <h6 className='dark-blue-faded'>{data.region}</h6>
+                <div className="title-head fade-in">
+                    <div className="user-title">
+                        <h3 className="dark-blue Comfortaa">{data.name}</h3>
+                        <h6 className="dark-blue-faded">{data.region}</h6>
                     </div>
                     <div>
                         <a
-                            href='/login/retailer'
+                            href="/login/retailer"
                             onClick={() => {
                                 localStorage.clear();
                             }}
@@ -118,48 +118,48 @@ export default function RetailerPage({ status, data }) {
                         </a>
                     </div>
                 </div>
-                <div className='light-bg center-container py-4 px-3 fade-in'>
+                <div className="light-bg center-container py-4 px-3 fade-in">
                     {previous ? (
                         <Switch>
-                            <Route path='/' exact>
+                            <Route path="/" exact>
                                 <PrevOrder {...props} />
                             </Route>
                             <Route path={["/signup/retailer", "/login/retailer"]}>
-                                <Redirect to='/' />
+                                <Redirect to="/" />
                             </Route>
                         </Switch>
                     ) : (
-                        <Redirect to='/order' />
+                        <Redirect to="/order" />
                     )}
 
                     {isPlaced === 0 || isPlaced === 2 ? (
                         <Switch>
-                            <Route path='/order' exact>
+                            <Route path="/order" exact>
                                 <PlaceOrder {...props} />
                             </Route>
                             <Route path={["/signup/retailer", "/login/retailer"]}>
-                                <Redirect to='/order' />
+                                <Redirect to="/order" />
                             </Route>
                         </Switch>
                     ) : isPlaced === 1 || isPlaced === 3 ? (
                         <Switch>
-                            <Route path='/order' exact>
+                            <Route path="/order" exact>
                                 <CurrentOrder {...props} />
                             </Route>
                             <Route path={["/signup/retailer", "/login/retailer"]}>
-                                <Redirect to='/order' />
+                                <Redirect to="/order" />
                             </Route>
                         </Switch>
                     ) : (
                         <></>
                     )}
                 </div>
-                <div className='footer-title mb-3 pb-2 mx-auto fade-in'>
+                <div className="footer-title mb-3 pb-2 mx-auto fade-in">
                     <TitleSVG />
                 </div>
             </>
         );
     } else {
-        return <Redirect to='/' />;
+        return <Redirect to="/" />;
     }
 }

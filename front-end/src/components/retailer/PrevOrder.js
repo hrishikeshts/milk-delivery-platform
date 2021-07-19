@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 export default function PrevOrder({ distributor, previous, isPlaced, setIsPlaced }) {
     useEffect(() => {
@@ -11,12 +12,25 @@ export default function PrevOrder({ distributor, previous, isPlaced, setIsPlaced
         <>
             <h3 className="blue">Previous Order Summary</h3>
             <div></div>
-            <h5 className="dark-blue p-1 my-1">
-                Your order has been delivered by <br /> {distributor.name}
-            </h5>
+            {previous.isDelivered === 2 ? (
+                <div>
+                    <IoMdCheckmarkCircleOutline />
+                    <h5 className="dark-blue p-1 my-1">Your order has been delivered by {distributor.name}</h5>
+                </div>
+            ) : previous.isDelivered === 1 ? (
+                <div>
+                    <IoMdCheckmarkCircleOutline />
+                    <h5 className="dark-blue p-1 my-1">Your order is yet to be delivered by {distributor.name}</h5>
+                </div>
+            ) : (
+                <div>
+                    <IoMdCheckmarkCircleOutline />
+                    <h5 className="dark-blue p-1 my-1">Your order could not be delivered by {distributor.name}</h5>
+                </div>
+            )}
             <div className="items-container">
-                {previous ? (
-                    previous.map((product) => {
+                {previous.result ? (
+                    previous.result.map((product) => {
                         return (
                             <div
                                 key={product.pid}
