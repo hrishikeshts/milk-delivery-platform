@@ -6,7 +6,8 @@ import { FiCheckCircle, FiXCircle, FiAlertCircle } from "react-icons/fi";
 export default function PrevOrder({ distributor, previous, isPlaced, setIsPlaced }) {
     useEffect(() => {
         document.title = "Previous Order Summary – DairyDash";
-    }, []);
+        console.log(previous);
+    }, [previous]);
 
     return (
         <>
@@ -17,15 +18,15 @@ export default function PrevOrder({ distributor, previous, isPlaced, setIsPlaced
                         <FiCheckCircle size="130px" className="green py-1" />
                         <h5 className="dark-blue p-1 my-1">Your order has been delivered by {distributor.name}</h5>
                     </div>
-                ) : previous.isDelivered === 1 ? (
-                    <div>
-                        <FiAlertCircle size="18px" className="dark-blue-faded py-1" />
-                        <h5 className="dark-blue p-1 my-1">Your order is yet to be delivered by {distributor.name}</h5>
-                    </div>
-                ) : (
+                ) : previous.isDelivered === 0 ? (
                     <div>
                         <FiXCircle size="130px" className="red py-1" />
                         <h5 className="dark-blue p-1 my-1">Your order could not be delivered by {distributor.name}</h5>
+                    </div>
+                ) : (
+                    <div>
+                        <FiAlertCircle size="130px" className="dark-blue-faded py-1" />
+                        <h5 className="dark-blue p-1 my-1">Your order is yet to be delivered by {distributor.name}</h5>
                     </div>
                 )}
             </div>
@@ -49,7 +50,8 @@ export default function PrevOrder({ distributor, previous, isPlaced, setIsPlaced
                 )}
             </div>
             <h5 className="text-center dark-blue-faded px-1">
-                Haven’t received your order?&nbsp;
+                Haven’t received your order?
+                <br />
                 <a href={`tel: ${distributor.phone}`} className="dark-blue call">
                     Call distributor
                 </a>

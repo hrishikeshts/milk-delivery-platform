@@ -5,8 +5,8 @@ const distributorStatus = async (req, res) => {
         console.log(req.params);
         const region = "SELECT region FROM distributor WHERE did=?";
         const retailer = `SELECT rid FROM retailer WHERE region=(${region})`;
-        const order = `SELECT * FROM \`order\` WHERE rid IN (${retailer}) AND date=CURDATE()`;
-        const count = `SELECT * FROM \`order\` o, order_product op WHERE rid IN (${retailer}) AND o.oid=op.oid AND date=CURDATE()`;
+        const order = `SELECT * FROM \`order\` WHERE rid IN (${retailer}) AND date=SUBDATE(CURDATE(), 1)`;
+        const count = `SELECT * FROM \`order\` o, order_product op WHERE rid IN (${retailer}) AND o.oid=op.oid AND date=SUBDATE(CURDATE(), 1)`;
         db.query(
             `SELECT rid, name, phone FROM retailer WHERE region=(${region}); ${order}; ${count};`,
             [req.params.did, req.params.did, req.params.did],
