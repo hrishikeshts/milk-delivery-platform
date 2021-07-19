@@ -18,12 +18,12 @@ export default function CurrentOrder({
       <h3 className="blue">Current Order Summary</h3>
 
       <div className="items-order-box align-self-center bg-white py-3 m-2">
-        {order && isPlaced !== 3
+        {order
           ? order.map((product) => {
               return (
-                <div key={product.pid}>
-                  <h4>{product.name}</h4>&nbsp;
-                  {product.count}
+                <div key={product.pid} className={"p-1 " + product.name}>
+                  <h5 className="d-inline-block">{product.name}</h5>&nbsp;
+                  <h5 className="d-inline-block"> {product.count}</h5>
                 </div>
               );
             })
