@@ -55,7 +55,7 @@ const DistributorSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "Milk Delivery Platform");
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -126,7 +126,7 @@ const RetailerSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "Milk Delivery Platform");
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -167,7 +167,7 @@ const DistributorLogin = (req, res) => {
                                 console.log("Password verified...");
 
                                 const userData = result[0];
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "Milk Delivery Platform");
 
                                 // req.session.user = result;
                                 res.json({
@@ -218,7 +218,7 @@ const RetailerLogin = (req, res) => {
                                 console.log("Password verified...");
 
                                 const userData = result[0];
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "Milk Delivery Platform");
 
                                 // req.session.user = result;
                                 res.json({
