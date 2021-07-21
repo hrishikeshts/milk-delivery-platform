@@ -1,4 +1,4 @@
-const { db } = require("../db/connect");
+const { db } = require("../config/db");
 
 const DistributorRegion = async (req, res) => {
     console.log("GET request for distributor regions received...");

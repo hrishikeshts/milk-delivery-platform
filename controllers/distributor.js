@@ -1,4 +1,4 @@
-const { db } = require("../db/connect");
+const { db } = require("../config/db");
 
 const distributorStatus = async (req, res) => {
     try {

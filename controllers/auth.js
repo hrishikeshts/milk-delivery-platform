@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { db, queryPromise } = require("../db/connect");
+const { db, queryPromise } = require("../config/db");
 
 const DistributorSignup = async (req, res) => {
     try {
