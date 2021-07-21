@@ -16,9 +16,7 @@ const DistributorSignup = async (req, res) => {
         queryPromise("SELECT * FROM retailer WHERE phone=?", [user.phone])
             .then((result) => {
                 if (result.length > 0) {
-                    res.status(409).send(
-                        "Phone number already registered as retailer!"
-                    );
+                    res.status(409).send("Phone number already registered as retailer!");
                     console.log("Phone number exists in retailer table!");
                 } else {
                     db.query(
@@ -27,21 +25,15 @@ const DistributorSignup = async (req, res) => {
                         (err, result) => {
                             if (err) {
                                 if (err.code === "ER_DUP_ENTRY") {
-                                    console.error(
-                                        "Duplicate entry for distributor entered!"
-                                    );
+                                    console.error("Duplicate entry for distributor entered!");
                                     if (err.sqlMessage.includes("phone")) {
-                                        console.error(
-                                            "Phone number is the duplicate entry!"
-                                        );
+                                        console.error("Phone number is the duplicate entry!");
                                         res.send({
                                             alert: "Phone number already registered!",
                                         });
                                     }
                                     if (err.sqlMessage.includes("region")) {
-                                        console.error(
-                                            "Region is the duplicate entry!"
-                                        );
+                                        console.error("Region is the duplicate entry!");
                                         res.send({
                                             alert: "This region already has a distributor!",
                                         });
@@ -51,9 +43,7 @@ const DistributorSignup = async (req, res) => {
                                     res.status(500);
                                 }
                             } else {
-                                console.log(
-                                    "POST request for distributor signup received..."
-                                );
+                                console.log("POST request for distributor signup received...");
                                 // res.status(201).send("User data saved to database...");
                                 console.log(result);
 
@@ -65,10 +55,7 @@ const DistributorSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign(
-                                    { userData },
-                                    process.env.SECRET
-                                );
+                                const token = jwt.sign({ userData }, process.env.SECRET);
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -103,9 +90,7 @@ const RetailerSignup = async (req, res) => {
         queryPromise("SELECT * FROM distributor WHERE phone=?", [user.phone])
             .then((result) => {
                 if (result.length > 0) {
-                    res.status(409).send(
-                        "Phone number already registered as distributor!"
-                    );
+                    res.status(409).send("Phone number already registered as distributor!");
                     console.log("Phone number exists in distributor table!");
                 } else {
                     db.query(
@@ -114,34 +99,22 @@ const RetailerSignup = async (req, res) => {
                         (err, result) => {
                             if (err) {
                                 if (err.code === "ER_DUP_ENTRY") {
-                                    console.error(
-                                        "Duplicate entry for retailer entered!"
-                                    );
+                                    console.error("Duplicate entry for retailer entered!");
                                     if (err.sqlMessage.includes("phone")) {
-                                        console.error(
-                                            "Phone number is the duplicate entry!"
-                                        );
+                                        console.error("Phone number is the duplicate entry!");
                                         res.send({
                                             alert: "Phone number already registered!",
                                         });
                                     }
-                                } else if (
-                                    err.code === "ER_NO_REFERENCED_ROW_2"
-                                ) {
-                                    console.error(
-                                        "No distributor data exists!"
-                                    );
-                                    res.status(409).send(
-                                        "Ask your distributor to register first!"
-                                    );
+                                } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
+                                    console.error("No distributor data exists!");
+                                    res.status(409).send("Ask your distributor to register first!");
                                 } else {
                                     console.log(err);
                                     res.status(500);
                                 }
                             } else {
-                                console.log(
-                                    "POST request for retailer signup received..."
-                                );
+                                console.log("POST request for retailer signup received...");
                                 // res.status(201).send("User data saved to database...");
                                 console.log(result);
 
@@ -153,10 +126,7 @@ const RetailerSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign(
-                                    { userData },
-                                    process.env.SECRET
-                                );
+                                const token = jwt.sign({ userData }, process.env.SECRET);
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -184,59 +154,43 @@ const DistributorLogin = (req, res) => {
     queryPromise("SELECT * FROM retailer WHERE phone=?", [phone])
         .then((result) => {
             if (result.length > 0) {
-                res.status(401).send(
-                    "This phone number is registered as a retailer!"
-                );
+                res.status(401).send("This phone number is registered as a retailer!");
                 console.log("Phone number is in retailer table!");
             } else {
-                db.query(
-                    "SELECT * FROM distributor WHERE phone = ?",
-                    [phone],
-                    (err, result) => {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).send();
-                        } else if (result.length > 0) {
-                            bcrypt.compare(
-                                password,
-                                result[0].password,
-                                (err, response) => {
-                                    if (response) {
-                                        console.log("Password verified...");
+                db.query("SELECT * FROM distributor WHERE phone = ?", [phone], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send();
+                    } else if (result.length > 0) {
+                        bcrypt.compare(password, result[0].password, (err, response) => {
+                            if (response) {
+                                console.log("Password verified...");
 
-                                        const userData = result[0];
-                                        const token = jwt.sign(
-                                            { userData },
-                                            process.env.SECRET
-                                        );
+                                const userData = result[0];
+                                const token = jwt.sign({ userData }, process.env.SECRET);
 
-                                        // req.session.user = result;
-                                        res.json({
-                                            auth: true,
-                                            token: token,
-                                            result: result,
-                                        });
-                                    } else {
-                                        res.json({
-                                            auth: false,
-                                            message: "Invalid password!",
-                                        });
-                                        console.log(
-                                            "Password can't be matched!"
-                                        );
-                                    }
-                                }
-                            );
-                        } else {
-                            res.json({
-                                auth: false,
-                                message:
-                                    "User doesn't exist! Sign up to continue...",
-                            });
-                            console.log("No match found from database!");
-                        }
+                                // req.session.user = result;
+                                res.json({
+                                    auth: true,
+                                    token: token,
+                                    result: result,
+                                });
+                            } else {
+                                res.json({
+                                    auth: false,
+                                    message: "Invalid password!",
+                                });
+                                console.log("Password can't be matched!");
+                            }
+                        });
+                    } else {
+                        res.json({
+                            auth: false,
+                            message: "User doesn't exist! Sign up to continue...",
+                        });
+                        console.log("No match found from database!");
                     }
-                );
+                });
             }
         })
         .catch((err) => {
@@ -251,59 +205,43 @@ const RetailerLogin = (req, res) => {
     queryPromise("SELECT * FROM distributor WHERE phone=?", [phone])
         .then((result) => {
             if (result.length > 0) {
-                res.status(401).send(
-                    "This phone number is registered as a distributor!"
-                );
+                res.status(401).send("This phone number is registered as a distributor!");
                 console.log("Phone number is in distributor table!");
             } else {
-                db.query(
-                    "SELECT * FROM retailer WHERE phone = ?",
-                    [phone],
-                    (err, result) => {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).send();
-                        } else if (result.length > 0) {
-                            bcrypt.compare(
-                                password,
-                                result[0].password,
-                                (err, response) => {
-                                    if (response) {
-                                        console.log("Password verified...");
+                db.query("SELECT * FROM retailer WHERE phone = ?", [phone], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send();
+                    } else if (result.length > 0) {
+                        bcrypt.compare(password, result[0].password, (err, response) => {
+                            if (response) {
+                                console.log("Password verified...");
 
-                                        const userData = result[0];
-                                        const token = jwt.sign(
-                                            { userData },
-                                            process.env.SECRET
-                                        );
+                                const userData = result[0];
+                                const token = jwt.sign({ userData }, process.env.SECRET);
 
-                                        // req.session.user = result;
-                                        res.json({
-                                            auth: true,
-                                            token: token,
-                                            result: result,
-                                        });
-                                    } else {
-                                        res.json({
-                                            auth: false,
-                                            message: "Invalid password!",
-                                        });
-                                        console.log(
-                                            "Password can't be matched!"
-                                        );
-                                    }
-                                }
-                            );
-                        } else {
-                            res.json({
-                                auth: false,
-                                message:
-                                    "User doesn't exist! Sign up to continue...",
-                            });
-                            console.log("No match found from database!");
-                        }
+                                // req.session.user = result;
+                                res.json({
+                                    auth: true,
+                                    token: token,
+                                    result: result,
+                                });
+                            } else {
+                                res.json({
+                                    auth: false,
+                                    message: "Invalid password!",
+                                });
+                                console.log("Password can't be matched!");
+                            }
+                        });
+                    } else {
+                        res.json({
+                            auth: false,
+                            message: "User doesn't exist! Sign up to continue...",
+                        });
+                        console.log("No match found from database!");
                     }
-                );
+                });
             }
         })
         .catch((err) => {

@@ -4,7 +4,8 @@ import axios from "axios";
 import PrevOrder from "./PrevOrder";
 import PlaceOrder from "./PlaceOrder";
 import CurrentOrder from "./CurrentOrder";
-import TitleSVG from "../../TitleSVG";
+import "../../styles/retailer.scss";
+import Hamburger from "../../assets/hamburger.svg";
 
 export default function RetailerPage({ status, data }) {
     const [products, setProducts] = useState([]);
@@ -101,24 +102,48 @@ export default function RetailerPage({ status, data }) {
 
     if (status) {
         return (
-            <>
-                <div className="title-head fade-in">
+            <div className="home fade-in">
+                <div className="title-head">
                     <div className="user-title">
-                        <h3 className="dark-blue Comfortaa">{data.name}</h3>
-                        <h6 className="dark-blue-faded">{data.region}</h6>
+                        <h3 className="dark-blue Comfortaa text-truncate">{data.name}</h3>
+                        <h6 className="dark-blue-faded text-truncate">{data.region}</h6>
                     </div>
-                    <div>
-                        <a
-                            href="/login/retailer"
-                            onClick={() => {
-                                localStorage.clear();
-                            }}
+                    <div className="dropdown">
+                        <button
+                            className="btn dropdown-toggle p-2"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
                         >
-                            Log out
-                        </a>
+                            <img src={Hamburger} alt="Menu" />
+                        </button>
+                        <div
+                            className="dropdown-menu dropdown-menu-right white-card shadow-btn"
+                            aria-labelledby="dropdownMenuButton"
+                        >
+                            <div className="d-flex flex-column align-items-center">
+                                <a
+                                    href={`tel:${distributor.phone}`}
+                                    className="w-100 text-center text-decoration-none my-1"
+                                >
+                                    Call Distributor
+                                </a>
+                                <a
+                                    href="/login/retailer"
+                                    onClick={() => {
+                                        localStorage.clear();
+                                    }}
+                                    className="w-100 text-center text-decoration-none my-1"
+                                >
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="light-bg center-container py-4 px-3 fade-in">
+                <div className="light-bg center-container pt-4 px-2 flex-fill">
                     {previous ? (
                         <Switch>
                             <Route path="/" exact>
@@ -154,10 +179,7 @@ export default function RetailerPage({ status, data }) {
                         <></>
                     )}
                 </div>
-                <div className="footer-title mb-3 pb-2 mx-auto fade-in">
-                    <TitleSVG />
-                </div>
-            </>
+            </div>
         );
     } else {
         return <Redirect to="/" />;

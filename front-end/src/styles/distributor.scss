@@ -1,0 +1,32 @@
+.footer-title {
+    width: 30%;
+}
+
+.product-chart-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 8px;
+}
+
+.stores-order-box {
+    // height: 120px;
+    width: 350px;
+    border-radius: 14px;
+    // display: flex;
+    // flex-direction: ;
+    box-shadow: 0px 8px 20px rgba(0, 55, 111, 0.1);
+}
+
+.store-name {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.delivery-container {
+    min-height: 2rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}

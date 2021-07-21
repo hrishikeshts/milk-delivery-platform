@@ -3,8 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
 import Status from "./Status";
 import Delivery from "./Delivery";
-import TitleSVG from "../../TitleSVG";
-import "../../styles/home.scss";
+import "../../styles/distributor.scss";
+import Hamburger from "../../assets/hamburger.svg";
 
 export default function DistributorPage({ status, data }) {
     const [products, setProducts] = useState([]);
@@ -94,24 +94,42 @@ export default function DistributorPage({ status, data }) {
 
     if (status) {
         return (
-            <>
-                <div className="title-head fade-in">
+            <div className="home fade-in">
+                <div className="title-head">
                     <div className="user-title">
-                        <h3 className="dark-blue Comfortaa">{data.name}</h3>
-                        <h6 className="dark-blue-faded">{data.region}</h6>
+                        <h3 className="dark-blue Comfortaa text-truncate">{data.name}</h3>
+                        <h6 className="dark-blue-faded text-truncate">{data.region}</h6>
                     </div>
-                    <div>
-                        <a
-                            href="/"
-                            onClick={() => {
-                                localStorage.clear();
-                            }}
+                    <div className="dropdown">
+                        <button
+                            className="btn dropdown-toggle p-2"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
                         >
-                            Log out
-                        </a>
+                            <img src={Hamburger} alt="Menu" />
+                        </button>
+                        <div
+                            className="dropdown-menu dropdown-menu-right white-card shadow-btn"
+                            aria-labelledby="dropdownMenuButton"
+                        >
+                            <div className="d-flex flex-column align-items-center">
+                                <a
+                                    href="/login/distributor"
+                                    onClick={() => {
+                                        localStorage.clear();
+                                    }}
+                                    className="w-100 text-center text-decoration-none"
+                                >
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="light-bg center-container py-4 px-3 fade-in">
+                <div className="light-bg center-container pt-4 px-2 flex-fill">
                     <Switch>
                         <Route path="/" exact>
                             <Status {...props} />
@@ -127,10 +145,7 @@ export default function DistributorPage({ status, data }) {
                         </Route>
                     </Switch>
                 </div>
-                <div className="footer-title mb-3 pb-2 mx-auto fade-in">
-                    <TitleSVG />
-                </div>
-            </>
+            </div>
         );
     } else {
         return <Redirect to="/" />;
