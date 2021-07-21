@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.886905ba.chunk.css",
+    "main.js": "/static/js/main.8e62f131.chunk.js",
+    "main.js.map": "/static/js/main.8e62f131.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.d59e38eb.js",
+    "runtime-main.js.map": "/static/js/runtime-main.d59e38eb.js.map",
+    "static/css/2.6c0f60ba.chunk.css": "/static/css/2.6c0f60ba.chunk.css",
+    "static/js/2.af7c3e4b.chunk.js": "/static/js/2.af7c3e4b.chunk.js",
+    "static/js/2.af7c3e4b.chunk.js.map": "/static/js/2.af7c3e4b.chunk.js.map",
+    "static/js/3.86b3f410.chunk.js": "/static/js/3.86b3f410.chunk.js",
+    "static/js/3.86b3f410.chunk.js.map": "/static/js/3.86b3f410.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.6c0f60ba.chunk.css.map": "/static/css/2.6c0f60ba.chunk.css.map",
+    "static/css/main.886905ba.chunk.css.map": "/static/css/main.886905ba.chunk.css.map",
+    "static/js/2.af7c3e4b.chunk.js.LICENSE.txt": "/static/js/2.af7c3e4b.chunk.js.LICENSE.txt",
+    "static/media/hamburger.e8355311.svg": "/static/media/hamburger.e8355311.svg",
+    "static/media/shop.d00f512b.svg": "/static/media/shop.d00f512b.svg",
+    "static/media/van.f9898aff.svg": "/static/media/van.f9898aff.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d59e38eb.js",
+    "static/css/2.6c0f60ba.chunk.css",
+    "static/js/2.af7c3e4b.chunk.js",
+    "static/css/main.886905ba.chunk.css",
+    "static/js/main.8e62f131.chunk.js"
+  ]
+}
