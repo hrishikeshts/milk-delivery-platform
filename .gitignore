@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+#development
+/front-end
+/back-end
+
 # environment
 /.env
 
