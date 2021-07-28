@@ -7,7 +7,7 @@ import CurrentOrder from "./CurrentOrder";
 import "../../styles/retailer.scss";
 import Hamburger from "../../assets/hamburger.svg";
 
-export default function RetailerPage({ status, data }) {
+export default function RetailerPage({ status, data, socket }) {
     const [products, setProducts] = useState([]);
     const [distributor, setDistributor] = useState([]);
     const [previous, setPrevious] = useState([]);
@@ -15,6 +15,14 @@ export default function RetailerPage({ status, data }) {
     const [price, setPrice] = useState({ total: 0 });
     const [isPlaced, setIsPlaced] = useState(false);
     const [order, setOrder] = useState([]);
+    const [update, setUpdate] = useState(false);
+
+    socket.on("delivery", (message) => {
+        console.log(message);
+        setTimeout(() => {
+            setUpdate(!update);
+        });
+    });
 
     useEffect(() => {
         axios
@@ -61,7 +69,7 @@ export default function RetailerPage({ status, data }) {
             });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [update]);
 
     useEffect(() => {
         products.map((product) => {
@@ -98,6 +106,7 @@ export default function RetailerPage({ status, data }) {
         order,
         isPlaced,
         setIsPlaced,
+        socket,
     };
 
     if (status) {

@@ -6,13 +6,21 @@ import Delivery from "./Delivery";
 import "../../styles/distributor.scss";
 import Hamburger from "../../assets/hamburger.svg";
 
-export default function DistributorPage({ status, data }) {
+export default function DistributorPage({ status, data, socket }) {
     const [products, setProducts] = useState([]);
     const [retailers, setRetailers] = useState([]);
     const [retailerCount, setRetailerCount] = useState({});
     const [orderDetails, setOrderDetails] = useState([]);
     const [orders, setOrders] = useState([]);
     const [orderCount, setOrderCount] = useState({ total: 0 });
+    const [update, setUpdate] = useState(false);
+
+    socket.on("order", (message) => {
+        console.log(message);
+        setTimeout(() => {
+            setUpdate(!update);
+        });
+    });
 
     useEffect(() => {
         document.title = "Next Delivery Info – DairyDash";
@@ -46,7 +54,7 @@ export default function DistributorPage({ status, data }) {
                 console.error(err.response);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
+    }, [data, update]);
 
     useEffect(() => {
         products.map((product) => {
@@ -90,7 +98,7 @@ export default function DistributorPage({ status, data }) {
         });
     }, [orderDetails]);
 
-    const props = { products, retailers, retailerCount, orderDetails, orders, orderCount };
+    const props = { products, retailers, retailerCount, orderDetails, orders, orderCount, socket };
 
     if (status) {
         return (

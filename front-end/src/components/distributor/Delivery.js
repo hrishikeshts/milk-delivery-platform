@@ -5,7 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { FaDotCircle } from "react-icons/fa";
 import TitleSVG from "../../TitleSVG";
 
-export default function Delivery({ products, retailers, orderDetails, orders, orderCount }) {
+export default function Delivery({ products, retailers, orderDetails, orders, orderCount, socket }) {
     return (
         <>
             <h3 className="blue fade-in">Delivery Status</h3>
@@ -61,7 +61,7 @@ export default function Delivery({ products, retailers, orderDetails, orders, or
                                                 <></>
                                             )}
                                         </div>
-                                        <DeliverySelect oid={orderDetail.oid} />
+                                        <DeliverySelect oid={orderDetail.oid} socket={socket} />
                                     </div>
                                 </div>
                             );

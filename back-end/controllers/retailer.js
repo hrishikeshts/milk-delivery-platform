@@ -1,4 +1,4 @@
-const { db, queryPromise } = require("../db/connect");
+const { db, queryPromise } = require("../config/db");
 
 const retailerStatus = async (req, res) => {
     try {

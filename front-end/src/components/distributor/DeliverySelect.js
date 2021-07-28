@@ -4,7 +4,7 @@ import axios from "axios";
 import { FiCheckCircle, FiXCircle, FiAlertCircle } from "react-icons/fi";
 import { renderToStaticMarkup } from "react-dom/server";
 
-export default function DeliverySelect({ oid }) {
+export default function DeliverySelect({ oid, socket }) {
     let count = 0;
     let valueArray = [];
 
@@ -17,6 +17,8 @@ export default function DeliverySelect({ oid }) {
             valueTimeout = valueArray.pop();
             console.log(valueTimeout);
             // console.log(count);
+
+            socket.emit("delivery", "Delivery status set for order " + oid);
             axios
                 .post(`/d/o${oid}/delivery`, {
                     value: valueTimeout,

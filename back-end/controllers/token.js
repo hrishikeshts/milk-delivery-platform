@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
     if (!token) {
         res.status(404).json({ auth: false, message: "Token not found!" });
     } else {
-        jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        jwt.verify(token, process.env.SECRET || "secret", (err, decoded) => {
             if (err) {
                 res.status(406).json({
                     auth: false,

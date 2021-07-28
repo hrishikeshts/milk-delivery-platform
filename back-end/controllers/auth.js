@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { db, queryPromise } = require("../db/connect");
+const { db, queryPromise } = require("../config/db");
 
 const DistributorSignup = async (req, res) => {
     try {
@@ -55,7 +55,7 @@ const DistributorSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "secret");
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -126,7 +126,7 @@ const RetailerSignup = async (req, res) => {
                                     password: user.password,
                                     role: true, // For distributor, role is set to true
                                 };
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "secret");
                                 res.status(201).json({
                                     auth: true,
                                     token: token,
@@ -167,7 +167,7 @@ const DistributorLogin = (req, res) => {
                                 console.log("Password verified...");
 
                                 const userData = result[0];
-                                const token = jwt.sign({ userData }, process.env.SECRET);
+                                const token = jwt.sign({ userData }, process.env.SECRET || "secret");
 
                                 // req.session.user = result;
                                 res.json({

@@ -15,6 +15,7 @@ export default function PlaceOrder({
     setIsPlaced,
     order,
     previous,
+    socket,
 }) {
     useEffect(() => {
         if (isPlaced === 0) {
@@ -27,6 +28,7 @@ export default function PlaceOrder({
 
     const placeOrder = (e) => {
         e.preventDefault();
+        socket.emit("order", "Order request by " + data.rid);
 
         axios
             .post(`/r${data.rid}/order${isPlaced === 2 ? "/edit" : ""}`, {

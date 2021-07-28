@@ -7,13 +7,15 @@ const auth = require("./routes/auth");
 const distributor = require("./routes/distributor");
 const retailer = require("./routes/retailer");
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(getData, auth, distributor, retailer);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Express app listening on port ${PORT}...`);
 });
+
+require("./config/socket").createConnection(server);

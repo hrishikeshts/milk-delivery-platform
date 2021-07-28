@@ -8,11 +8,15 @@ import DistributorPage from "./components/distributor/DistributorPage";
 import RetailerPage from "./components/retailer/RetailerPage";
 import TitleSVG from "./TitleSVG";
 import axios from "axios";
+import { io } from "socket.io-client";
 import "./App.scss";
 
-axios.defaults.baseURL = "http://localhost:4000";
+const baseURL = "http://localhost:4000";
+axios.defaults.baseURL = baseURL;
+const socket = io(baseURL);
 
 export default function App() {
+    socket.on("connection");
     const [loading, setLoading] = useState(true);
 
     const [status, setStatus] = useState(false);
@@ -48,7 +52,7 @@ export default function App() {
             });
     }, []);
 
-    const props = { status, role, data, setStatus, setRole, setData };
+    const props = { status, role, data, setStatus, setRole, setData, socket };
 
     return (
         <div className="Container">
