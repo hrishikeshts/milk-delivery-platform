@@ -218,7 +218,7 @@ const RetailerLogin = (req, res) => {
                                 console.log("Password verified...");
 
                                 const userData = result[0];
-                                const token = jwt.sign({ userData }, process.env.SECRET || "secret");
+                                const token = jwt.sign({ userData }, process.env.SECRET);
 
                                 // req.session.user = result;
                                 res.json({

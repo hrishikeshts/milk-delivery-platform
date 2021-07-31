@@ -2,21 +2,35 @@ const { db } = require("../config/db");
 
 const distributorStatus = async (req, res) => {
     try {
-        console.log(req.params);
+        const prevDate =
+            "(DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7)";
+        const curDate = "DATE(date)=CURDATE() AND HOUR(date)>=7";
+
         const region = "SELECT region FROM distributor WHERE did=?";
         const retailer = `SELECT rid FROM retailer WHERE region=(${region})`;
-        const order = `SELECT * FROM \`order\` WHERE rid IN (${retailer}) AND date=SUBDATE(CURDATE(), 1)`;
-        const count = `SELECT * FROM \`order\` o, order_product op WHERE rid IN (${retailer}) AND o.oid=op.oid AND date=SUBDATE(CURDATE(), 1)`;
+        const order = (date) => `SELECT * FROM \`order\` WHERE rid IN (${retailer}) AND (${date})`;
+        const count = (date) =>
+            `SELECT * FROM \`order\` o, order_product op WHERE rid IN (${retailer}) AND o.oid=op.oid AND (${date})`;
+
+        const sql = `SELECT rid, name, phone FROM retailer WHERE region=(${region}); ${order(prevDate)}; ${count(
+            prevDate
+        )}; ${order(curDate)}; ${count(curDate)};`;
         db.query(
-            `SELECT rid, name, phone FROM retailer WHERE region=(${region}); ${order}; ${count};`,
-            [req.params.did, req.params.did, req.params.did],
+            sql,
+            [req.params.did, req.params.did, req.params.did, req.params.did, req.params.did],
             (err, result) => {
                 if (err) {
                     console.log(err);
                     res.status(500);
                 } else if (result.length > 0) {
                     console.log("Orders from current date returned...");
-                    res.send({ retailers: result[0], orderDetails: result[1], orders: result[2] });
+                    res.send({
+                        retailers: result[0],
+                        prevOrderDetails: result[1],
+                        prevOrders: result[2],
+                        curOrderDetails: result[3],
+                        curOrders: result[4],
+                    });
                 } else {
                     console.log("No order data exists in database!");
                     res.send({
@@ -49,4 +63,26 @@ const setDelivery = async (req, res) => {
     }
 };
 
-module.exports = { distributorStatus, setDelivery };
+const endDelivery = async (req, res) => {
+    try {
+        console.log(req.body.region);
+        db.query(
+            "UPDATE `order` SET isDelivered=0 WHERE rid IN (SELECT rid FROM retailer WHERE region=?) AND isDelivered IS NULL",
+            [req.body.region],
+            (err, result) => {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log("Remaining statuses updated in order table...");
+                    console.log(result);
+                    res.status(202).send({ message: "All delivery Statuses updated..." });
+                }
+            }
+        );
+    } catch {
+        res.status(500);
+        console.log("Server Error!");
+    }
+};
+
+module.exports = { distributorStatus, setDelivery, endDelivery };
