@@ -21,6 +21,40 @@
 .store-name {
     font-size: 18px;
     font-weight: 500;
+    width: 13.3rem;
+    white-space: nowrap;
+    transition: all 0.35s;
+    margin: 0.1rem;
+    svg {
+        margin: 0 0.12rem 0.12rem 0;
+    }
+    .arrow-forward {
+        display: none;
+    }
+}
+
+.store-name.collapsed {
+    transition: all 0.35s;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    .arrow-down {
+        display: none;
+    }
+    .arrow-forward {
+        display: inline;
+    }
+}
+
+.store-call {
+    text-decoration: none;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    svg {
+        margin-bottom: 0.12rem;
+    }
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .delivery-container {

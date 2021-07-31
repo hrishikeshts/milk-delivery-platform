@@ -6,68 +6,90 @@ import PlaceOrder from "./PlaceOrder";
 import CurrentOrder from "./CurrentOrder";
 import "../../styles/retailer.scss";
 import Hamburger from "../../assets/hamburger.svg";
+import TitleSVG from "../../TitleSVG";
 
-export default function RetailerPage({ status, data, socket }) {
+export default function RetailerPage({ loadingTime, loadingData, setLoadingData, status, data, socket, hour }) {
     const [products, setProducts] = useState([]);
     const [distributor, setDistributor] = useState([]);
     const [previous, setPrevious] = useState([]);
     const [count, setCount] = useState({ total: 0 });
     const [price, setPrice] = useState({ total: 0 });
-    const [isPlaced, setIsPlaced] = useState(false);
+    const [isPlaced, setIsPlaced] = useState(0);
     const [order, setOrder] = useState([]);
     const [update, setUpdate] = useState(false);
 
-    socket.on("delivery", (message) => {
-        console.log(message);
-        setTimeout(() => {
-            setUpdate(!update);
-        });
+    useEffect(() => {
+        let mounted = true;
+
+        if (mounted) {
+            socket.on("delivery", (message) => {
+                console.log(message);
+                setTimeout(() => {
+                    setUpdate(!update);
+                });
+            });
+        }
+
+        return function cleanup() {
+            mounted = false;
+        };
     });
 
     useEffect(() => {
-        axios
-            .get(`/${data.rid}/products`)
-            .then((res) => {
-                // console.log(res.data);
-                setProducts(res.data);
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
+        let mounted = true;
 
-        axios
-            .get(`/r${data.rid}/status`)
-            .then((res) => {
-                console.log(res.data.message);
-                setIsPlaced(res.data.isPlaced);
-                setOrder(res.data.result);
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
+        if (mounted) {
+            axios
+                .get(`/${data.rid}/products`)
+                .then((res) => {
+                    // console.log(res.data);
+                    setLoadingData(loadingData++);
+                    setProducts(res.data);
+                })
+                .catch((err) => {
+                    console.error(err.response);
+                });
 
-        // setInterval(() => {
-        axios
-            .get(`/r${data.rid}/previous`)
-            .then((res) => {
-                // console.log(res.data.result);
-                setPrevious(res.data);
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
-        // }, 5000);
+            axios
+                .get(`/r${data.rid}/status`)
+                .then((res) => {
+                    // console.log(res.data.message);
+                    setLoadingData(loadingData++);
+                    setIsPlaced(res.data.isPlaced);
+                    setOrder(res.data.result);
+                })
+                .catch((err) => {
+                    console.error(err.response);
+                });
 
-        axios
-            .get(`/r${data.rid}/distributor`)
-            .then((res) => {
-                // console.log(res.data[0]);
-                setDistributor(res.data[0]);
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
+            // setInterval(() => {
+            axios
+                .get(`/r${data.rid}/previous`)
+                .then((res) => {
+                    // console.log(res.data.result);
+                    setLoadingData(loadingData++);
+                    setPrevious(res.data);
+                })
+                .catch((err) => {
+                    console.error(err.response);
+                });
+            // }, 5000);
 
+            axios
+                .get(`/r${data.rid}/distributor`)
+                .then((res) => {
+                    // console.log(res.data[0]);
+                    setLoadingData(loadingData++);
+                    setDistributor(res.data[0]);
+                })
+                .catch((err) => {
+                    console.error(err.response);
+                });
+        }
+
+        return function cleanup() {
+            mounted = false;
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [update]);
 
@@ -107,9 +129,36 @@ export default function RetailerPage({ status, data, socket }) {
         isPlaced,
         setIsPlaced,
         socket,
+        hour,
     };
 
-    if (status) {
+    if (loadingTime) {
+        return (
+            <div className={`splash splash-${loadingData > 0 ? 1 : 0}`}>
+                <TitleSVG />
+                <div className="invisible mt-3">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (loadingData === 0) {
+        setTimeout(() => {
+            window.location.reload();
+        }, 10000);
+
+        return (
+            <div className={`splash`}>
+                <TitleSVG />
+                <div className="fade-in mt-3">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (status) {
         return (
             <div className="home fade-in">
                 <div className="title-head">
@@ -153,7 +202,28 @@ export default function RetailerPage({ status, data, socket }) {
                     </div>
                 </div>
                 <div className="light-bg center-container pt-4 px-2 flex-fill">
-                    {previous ? (
+                    <Switch>
+                        <Route path="/" exact>
+                            <PrevOrder {...props} />
+                        </Route>
+                        <Route path="/order" exact>
+                            {isPlaced === 0 || isPlaced === 2 ? (
+                                hour < 19 && hour >= 7 ? (
+                                    <PlaceOrder {...props} />
+                                ) : (
+                                    <Redirect to="/" />
+                                )
+                            ) : isPlaced === 1 || isPlaced === 3 ? (
+                                <CurrentOrder {...props} />
+                            ) : (
+                                <Redirect to="/" />
+                            )}
+                        </Route>
+                        <Route path="*">
+                            <Redirect to="/" />
+                        </Route>
+                    </Switch>
+                    {/* {previous ? (
                         <Switch>
                             <Route path="/" exact>
                                 <PrevOrder {...props} />
@@ -186,7 +256,7 @@ export default function RetailerPage({ status, data, socket }) {
                         </Switch>
                     ) : (
                         <></>
-                    )}
+                    )} */}
                 </div>
             </div>
         );

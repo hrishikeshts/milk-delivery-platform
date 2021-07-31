@@ -17,10 +17,17 @@
     height: 100vh;
     display: flex;
     align-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-primary {
+    color: #0078f0 !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .splash {
+    .splash.splash-1 {
         animation-name: title-fade;
         animation-duration: 0.5s;
         animation-timing-function: ease-in-out;
@@ -190,7 +197,7 @@ h5 {
 
 .dark-blue-btn {
     height: 3.2rem;
-    width: 64%;
+    width: 65%;
     border-radius: 0.9rem;
     box-shadow: 0 0.5rem 1.4rem 0.35rem rgba(57, 102, 149, 0.34);
 
@@ -241,6 +248,7 @@ h5 {
     width: 200px;
     align-self: center;
     margin: 12px;
+    filter: drop-shadow(10px 8px 20px rgba(0, 55, 111, 0.1));
 }
 
 .items-container {
@@ -300,4 +308,9 @@ h5 {
     font-size: 14px;
     font-weight: 500;
     color: #859bb0;
+}
+
+.small-text {
+    color: #859bb0;
+    font-weight: 500;
 }

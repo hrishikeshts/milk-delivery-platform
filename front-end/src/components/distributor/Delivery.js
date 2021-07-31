@@ -1,14 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DeliverySelect from "./DeliverySelect";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { FaDotCircle } from "react-icons/fa";
+import { BiMessageDetail } from "react-icons/bi";
+import { IoIosCall } from "react-icons/io";
 import TitleSVG from "../../TitleSVG";
 
-export default function Delivery({ products, retailers, orderDetails, orders, orderCount, socket }) {
+export default function Delivery({
+    products,
+    retailers,
+    orderDetails,
+    orders,
+    orderCount,
+    socket,
+    hour,
+    deliveryHour,
+}) {
     return (
         <>
-            <h3 className="blue fade-in">Delivery Status</h3>
+            <h3 className="blue fade-in">{hour >= 12 ? "Upcoming " : ""}Delivery Details</h3>
             <div className="delivery-container flex-grow-1 fade-in">
                 <div className="product-chart-box">
                     {products.map((product, key) => {
@@ -23,20 +34,35 @@ export default function Delivery({ products, retailers, orderDetails, orders, or
                 <div className="items-order-container pb-2">
                     {orderDetails
                         .filter((orderDetail) => orderDetail.amount > 0)
-                        .map((orderDetail) => {
-                            const key = orderDetail.rid - 1;
+                        .map((orderDetail, key) => {
+                            const retailer = retailers.filter((retailer) => retailer.rid === orderDetail.rid)[0];
                             return (
-                                <div key={orderDetail.oid} className="stores-order-box bg-white pt-2 pb-1 px-3 m-2">
-                                    <div className="d-flex justify-content-between mb-2">
-                                        <h5 className="store-name dark-blue px-2 pt-2 text-truncate">
-                                            {retailers[key].name}
-                                        </h5>
-                                        <h3 className="fw-bolder dark-blue m-0 pt-1 px-1">
-                                            ₹{orderDetail.amount.toString() + ".00"}
+                                <div key={orderDetail.oid} className="stores-order-box bg-white py-2 px-3 m-2">
+                                    <div className="d-flex justify-content-between align-items-end overflow-hidden">
+                                        <div className="pt-1">
+                                            <h5
+                                                className="store-name dark-blue text-start collapsed"
+                                                data-toggle="collapse"
+                                                href={`#collapse-${key}`}
+                                                role="button"
+                                                aria-expanded="false"
+                                                aria-controls={`collapse-${key}`}
+                                            >
+                                                <IoIosArrowForward className="arrow-forward" />
+                                                <IoIosArrowDown className="arrow-down" />
+                                                {retailer.name}
+                                            </h5>
+                                            <div className="collapse text-start px-3" id={`collapse-${key}`}>
+                                                <a href={`tel:${retailer.phone}`} className="store-call dark-blue">
+                                                    <IoIosCall />
+                                                    {retailer.phone}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h3 className="fw-bolder dark-blue m-0 px-1 bg-white rounded">
+                                            ₹{orderDetail.amount.toFixed(2)}
                                         </h3>
                                     </div>
-
-                                    {/* <div>{retailers[key].phone}</div> */}
                                     <div className="ps-2 pe-1 py-1 d-flex justify-content-between">
                                         <div className="d-flex me-2">
                                             {products.length > 0 ? (
@@ -61,7 +87,13 @@ export default function Delivery({ products, retailers, orderDetails, orders, or
                                                 <></>
                                             )}
                                         </div>
-                                        <DeliverySelect oid={orderDetail.oid} socket={socket} />
+                                        {deliveryHour === 1 || deliveryHour === 2 || deliveryHour === 4 ? (
+                                            <DeliverySelect orderDetail={orderDetail} socket={socket} />
+                                        ) : (
+                                            <small className={`d-block py-2 small-text`}>
+                                                <BiMessageDetail /> Not delivery hours!
+                                            </small>
+                                        )}
                                     </div>
                                 </div>
                             );
@@ -69,10 +101,13 @@ export default function Delivery({ products, retailers, orderDetails, orders, or
                 </div>
             </div>
             <div>
-                <div className="pt-3 pb-4 mb-1 fade-in">
+                <div className="pb-4 mb-1 fade-in">
+                    <small className={`d-block py-2 small-text${hour === 11 ? "" : " invisible"}`}>
+                        <BiMessageDetail /> Finish your delivery before 12pm!
+                    </small>
                     <Link to="/" className="dark-blue-btn btn bg-dark-blue py-2 pe-2 ps-3">
                         <span>
-                            <div>End Delivering</div>
+                            <div>Show Delivery Summary</div>
                             <div>
                                 <IoIosArrowForward size="18px" />
                             </div>

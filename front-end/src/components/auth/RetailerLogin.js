@@ -5,7 +5,7 @@ import TitleSVG from "../../TitleSVG";
 import van from "../../assets/van.svg";
 import shop from "../../assets/shop.svg";
 
-export default function RetailerLogin({ status, setStatus, setRole, setData }) {
+export default function RetailerLogin({ loadingTime, status, setStatus, setRole, setData }) {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
 
@@ -46,7 +46,14 @@ export default function RetailerLogin({ status, setStatus, setRole, setData }) {
                 }
             });
     };
-    if (status) {
+
+    if (loadingTime) {
+        return (
+            <div className="splash splash-1">
+                <TitleSVG />
+            </div>
+        );
+    } else if (status) {
         return <Redirect to="/" />;
     } else {
         return (

@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import DistributorSignup from "./components/auth/DistributorSignup";
 import RetailerSignup from "./components/auth/RetailerSignup";
 import DistributorLogin from "./components/auth/DistributorLogin";
 import RetailerLogin from "./components/auth/RetailerLogin";
 import DistributorPage from "./components/distributor/DistributorPage";
 import RetailerPage from "./components/retailer/RetailerPage";
-import TitleSVG from "./TitleSVG";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./App.scss";
 
-const baseURL = "http://localhost:4000";
-axios.defaults.baseURL = baseURL;
-const socket = io(baseURL);
+const serverURL = process.env.serverURL || "http://localhost:4000";
+axios.defaults.baseURL = serverURL;
+const socket = io(serverURL);
+socket.on("connection");
 
 export default function App() {
-    socket.on("connection");
-    const [loading, setLoading] = useState(true);
+    const [loadingTime, setLoadingTime] = useState(true);
+    const [loadingData, setLoadingData] = useState(0);
 
     const [status, setStatus] = useState(false);
     const [role, setRole] = useState(true);
     const [data, setData] = useState({});
+    const [hour, setHour] = useState(12);
 
     useEffect(() => {
         setTimeout(() => {
-            setLoading(false);
+            setLoadingTime(false);
         }, 2000);
 
         axios
@@ -36,6 +37,8 @@ export default function App() {
             })
             .then((res) => {
                 // console.log(res.data);
+                console.log(res.data.hour);
+                setHour(res.data.hour);
                 if (res.data.auth) {
                     setStatus(true);
                     setData(res.data.user);
@@ -52,19 +55,26 @@ export default function App() {
             });
     }, []);
 
-    const props = { status, role, data, setStatus, setRole, setData, socket };
+    const props = {
+        loadingTime,
+        loadingData,
+        setLoadingData,
+        socket,
+        hour,
+        status,
+        role,
+        data,
+        setHour,
+        setStatus,
+        setRole,
+        setData,
+    };
 
     return (
         <div className="Container">
             <div className="App">
                 <Switch>
-                    {loading ? (
-                        <Route>
-                            <div className="splash">
-                                <TitleSVG />
-                            </div>
-                        </Route>
-                    ) : status ? (
+                    {status ? (
                         role ? (
                             // Route for logged in distributor
                             <Route path="/">
@@ -94,8 +104,14 @@ export default function App() {
                             <Route path="/login/retailer" exact>
                                 <RetailerLogin {...props} />
                             </Route>
+                            <Route path="*">
+                                <Redirect to="/" />
+                            </Route>
                         </Switch>
                     )}
+                    <Route path="*">
+                        <Redirect to="/" />
+                    </Route>
                 </Switch>
             </div>
         </div>

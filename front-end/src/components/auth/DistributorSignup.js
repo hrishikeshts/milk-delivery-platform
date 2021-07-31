@@ -7,7 +7,15 @@ import van from "../../assets/van.svg";
 import shop from "../../assets/shop.svg";
 import "../../styles/auth.scss";
 
-export default function DistributorSignup({ status, setStatus, setRole, setData }) {
+export default function DistributorSignup({
+    loadingTime,
+    loadingData,
+    setLoadingData,
+    status,
+    setStatus,
+    setRole,
+    setData,
+}) {
     const [phone, setPhone] = useState("");
     const [name, setName] = useState("");
     const [region, setRegion] = useState("");
@@ -18,28 +26,31 @@ export default function DistributorSignup({ status, setStatus, setRole, setData 
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
-        let unmounted = false;
-        document.title = "Sign Up as Distributor – DairyDash";
+        let mounted = true;
 
-        axios
-            .get("/distributor/region")
-            .then((res) => {
-                // console.log(res.data);
-                if (!unmounted) {
+        if (mounted) {
+            document.title = "Sign Up as Distributor – DairyDash";
+
+            axios
+                .get("/distributor/region")
+                .then((res) => {
+                    // console.log(res.data);
+                    setLoadingData(1);
                     const options = res.data.map((data) => ({
                         value: data.name,
                         label: data.name,
                     }));
                     setOptions(options);
-                }
-            })
-            .catch((err) => {
-                console.error(err.response);
-            });
+                })
+                .catch((err) => {
+                    console.error(err.response);
+                });
+        }
 
-        return () => {
-            unmounted = true;
+        return function cleanup() {
+            mounted = false;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = (e) => {
@@ -89,7 +100,33 @@ export default function DistributorSignup({ status, setStatus, setRole, setData 
         }
     };
 
-    if (status) {
+    if (loadingTime) {
+        return (
+            <div className={`splash splash-${loadingData > 0 ? 1 : 0}`}>
+                <TitleSVG />
+                <div className="invisible mt-3">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (loadingData === 0) {
+        setTimeout(() => {
+            window.location.reload();
+        }, 10000);
+
+        return (
+            <div className={`splash`}>
+                <TitleSVG />
+                <div className="fade-in mt-3">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (status) {
         return <Redirect to="/" />;
     } else {
         return (

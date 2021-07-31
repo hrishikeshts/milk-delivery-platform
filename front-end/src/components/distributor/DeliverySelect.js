@@ -1,12 +1,31 @@
 import React, { createElement } from "react";
 import Select from "react-select";
 import axios from "axios";
-import { FiCheckCircle, FiXCircle, FiAlertCircle } from "react-icons/fi";
+import { FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { IoTimeOutline } from "react-icons/io5";
 import { renderToStaticMarkup } from "react-dom/server";
 
-export default function DeliverySelect({ oid, socket }) {
+export default function DeliverySelect({ orderDetail, socket }) {
     let count = 0;
     let valueArray = [];
+
+    const options = [
+        {
+            value: 0,
+            label: "Not Delivered",
+        },
+        {
+            value: 1,
+            label: "Pending",
+        },
+        {
+            value: 2,
+            label: "Delivered",
+        },
+    ];
+
+    const defaultOption =
+        orderDetail.isDelivered === 2 ? options[2] : orderDetail.isDelivered === 0 ? options[0] : options[1];
 
     const setDelivery = (option) => {
         count++;
@@ -18,9 +37,9 @@ export default function DeliverySelect({ oid, socket }) {
             console.log(valueTimeout);
             // console.log(count);
 
-            socket.emit("delivery", "Delivery status set for order " + oid);
+            socket.emit("delivery", "Delivery status set for order " + orderDetail.oid);
             axios
-                .post(`/d/o${oid}/delivery`, {
+                .post(`/d/o${orderDetail.oid}/delivery`, {
                     value: valueTimeout,
                 })
                 .then((res) => {
@@ -44,26 +63,10 @@ export default function DeliverySelect({ oid, socket }) {
 
     return (
         <Select
-            options={[
-                {
-                    value: 2,
-                    label: "Delivered",
-                },
-                {
-                    value: 1,
-                    label: "Pending",
-                },
-                {
-                    value: 0,
-                    label: "Not Delivered",
-                },
-            ]}
+            options={[options[2], options[0]]}
             styles={customStyles}
             isSearchable={false}
-            defaultValue={{
-                value: 1,
-                label: "Pending",
-            }}
+            defaultValue={defaultOption}
             onChange={setDelivery}
         />
     );
@@ -95,7 +98,7 @@ const optionStyle = (provided, state) => {
                     : state.data.value === 0
                     ? `url(${reactSvgComponentToMarkupString(FiXCircle, { color: "red" })})`
                     : state.data.value === 1
-                    ? `url(${reactSvgComponentToMarkupString(FiAlertCircle, { color: "#859BB0" })})`
+                    ? `url(${reactSvgComponentToMarkupString(IoTimeOutline, { color: "#859BB0" })})`
                     : ``,
             verticalAlign: "-12%",
             paddingRight: "0.3rem",
@@ -117,7 +120,7 @@ const optionStyle = (provided, state) => {
                         : state.data.value === 0
                         ? `url(${reactSvgComponentToMarkupString(FiXCircle, { color: "#b00000" })})`
                         : state.data.value === 1
-                        ? `url(${reactSvgComponentToMarkupString(FiAlertCircle, { color: "#566471" })})`
+                        ? `url(${reactSvgComponentToMarkupString(IoTimeOutline, { color: "#566471" })})`
                         : ``,
             },
         },
@@ -130,6 +133,7 @@ const customStyles = {
         border: "none",
         boxShadow: "none",
         width: "9.1rem",
+        minHeight: "1.9rem",
     }),
     indicatorsContainer: () => ({ display: "none" }),
     dropdownIndicator: () => ({}),

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { IoIosArrowForward } from "react-icons/io";
+import { BiMessageDetail } from "react-icons/bi";
 import TitleSVG from "../../TitleSVG";
 
 export default function PlaceOrder({
@@ -16,7 +17,10 @@ export default function PlaceOrder({
     order,
     previous,
     socket,
+    hour,
 }) {
+    const [small, setSmall] = useState("");
+
     useEffect(() => {
         if (isPlaced === 0) {
             document.title = "Place Upcoming Order – DairyDash";
@@ -43,20 +47,21 @@ export default function PlaceOrder({
                 setIsPlaced(res.data.isPlaced);
             })
             .catch((err) => {
-                console.error(err.response);
+                console.error(err.response.data);
+                setSmall(err.response.data);
             });
     };
 
     return (
         <>
-            <h3 className="blue">{isPlaced === 0 ? "Place Upcoming Order" : "Edit Current Order"}</h3>
+            <h3 className="blue fade-in">{isPlaced === 0 ? "Place Upcoming Order" : "Edit Current Order"}</h3>
             <div className="flex-grow-1 d-flex flex-column justify-content-evenly fade-in">
                 <div className="items-order-container">
                     {products.map((product) => {
                         return (
-                            <div key={product.pid} className="items-order-box bg-white my-2 pt-2 pb-3">
-                                <h4 className={"m-1 " + product.name}>{product.name}</h4>
-                                <div className="items-button-box mt-1">
+                            <div key={product.pid} className="items-order-box bg-white my-2 py-2">
+                                <h4 className={"mb-2 " + product.name}>{product.name}</h4>
+                                <div className="items-button-box mb-1">
                                     <button
                                         className={"btn button bg-blue p-0 bg-" + product.name.replaceAll(" ", "")}
                                         onClick={() => {
@@ -114,7 +119,7 @@ export default function PlaceOrder({
                 {/* <div>{count.total}</div> */}
                 <h5 className="total-text my-1">Total</h5>
                 <div>
-                    <h3 className="m-0 fw-normal dark-blue">{"₹" + price.total + ".00"}</h3>
+                    <h3 className="m-0 fw-normal dark-blue">₹{price.total.toFixed(2)}</h3>
                 </div>
                 <div className="mt-1 mb-2">
                     <button className="blue-btn btn button bg-blue px-4" onClick={placeOrder}>
@@ -123,9 +128,12 @@ export default function PlaceOrder({
                 </div>
             </div>
             <div>
-                <div className="pt-3 pb-4 mb-1 fade-in">
+                <div className="pb-4 mb-1 fade-in">
+                    <small className={`d-block py-2 small-text${small ? "" : " invisible"}`}>
+                        <BiMessageDetail /> {small}
+                    </small>
                     {previous ? (
-                        <Link to="/" className="dark-blue-btn btn bg-dark-blue py-2 pe-2 ps-3" type="submit">
+                        <Link to="/" className="dark-blue-btn btn bg-dark-blue py-2 pe-2 ps-3">
                             <span>
                                 <div>Show Previous Order</div>
                                 <div>
