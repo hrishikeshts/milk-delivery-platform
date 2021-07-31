@@ -10,7 +10,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import "./App.scss";
 
-const serverURL = process.env.serverURL || "http://localhost:4000";
+const serverURL = process.env.SERVER_URL || "http://localhost:4000";
 axios.defaults.baseURL = serverURL;
 const socket = io(serverURL);
 socket.on("connection");
