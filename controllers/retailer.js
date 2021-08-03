@@ -4,10 +4,10 @@ const retailerStatus = async (req, res) => {
     try {
         const hour = new Date().getHours();
         let status;
-        if (hour >= 7) status = "SELECT * FROM `order` WHERE rid=? AND DATE(date)=CURDATE() AND HOUR(date)>=7";
+        if (hour >= 7) status = "SELECT * FROM `order` WHERE rid=? AND DATE(date)=CURDATE() AND HOUR(date)>=1";
         else
             status =
-                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7)";
+                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=1) OR (DATE(date)=CURDATE() AND HOUR(date)<2)";
 
         db.query(status, [req.params.rid], (err, result) => {
             if (err) {
@@ -70,10 +70,10 @@ const getPrevious = async (req, res) => {
         let prev;
         if (hour >= 7)
             prev =
-                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7)";
+                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=1) OR (DATE(date)=CURDATE() AND HOUR(date)<2)";
         else
             prev =
-                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 2) AND HOUR(date)>=7) OR (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)<7)";
+                "SELECT * FROM `order` WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 2) AND HOUR(date)>=1) OR (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)<2)";
 
         db.query(prev, [req.params.rid], (err, result) => {
             if (err) {
@@ -131,6 +131,8 @@ const placeOrder = async (req, res) => {
             return res.status(409).send("Order can't be placed anymore!");
         }
 
+        // const date = new Date();
+        // const now = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
         db.query("INSERT INTO `order` (rid, date, amount) VALUES (?, NOW(), ?)", [rid, price.total], (err, result) => {
             if (err) {
                 if (err.code === "ER_DUP_ENTRY") {
@@ -176,10 +178,10 @@ const editOrder = async (req, res) => {
         }
         let edit;
         if (hour >= 7)
-            edit = "UPDATE `order` SET isPlaced=3, amount=? WHERE rid=? AND DATE(date)=CURDATE() AND HOUR(date)>=7";
+            edit = "UPDATE `order` SET isPlaced=3, amount=? WHERE rid=? AND DATE(date)=CURDATE() AND HOUR(date)>=1";
         else
             edit =
-                "UPDATE `order` SET isPlaced=3, amount=? WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7)";
+                "UPDATE `order` SET isPlaced=3, amount=? WHERE rid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=1) OR (DATE(date)=CURDATE() AND HOUR(date)<2)";
 
         db.query(edit, [price.total, rid], (err, result) => {
             if (err) {
@@ -201,10 +203,10 @@ const editOrder = async (req, res) => {
                         let editCount;
                         if (hour >= 7)
                             editCount =
-                                "UPDATE order_product SET count=? WHERE (oid=(SELECT oid FROM `order` WHERE (rid=? AND pid=? AND DATE(date)=CURDATE() AND HOUR(date)>=7)))";
+                                "UPDATE order_product SET count=? WHERE (oid=(SELECT oid FROM `order` WHERE (rid=? AND pid=? AND DATE(date)=CURDATE() AND HOUR(date)>=1)))";
                         else
                             editCount =
-                                "UPDATE order_product SET count=? WHERE (oid=(SELECT oid FROM `order` WHERE (rid=? AND pid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7))))";
+                                "UPDATE order_product SET count=? WHERE (oid=(SELECT oid FROM `order` WHERE (rid=? AND pid=? AND (DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=1) OR (DATE(date)=CURDATE() AND HOUR(date)<2))))";
                         return db.query(editCount, [count[key], rid, key], (err, result) => {
                             if (err) {
                                 throw err;

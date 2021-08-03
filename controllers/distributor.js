@@ -3,8 +3,8 @@ const { db } = require("../config/db");
 const distributorStatus = async (req, res) => {
     try {
         const prevDate =
-            "(DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=7) OR (DATE(date)=CURDATE() AND HOUR(date)<7)";
-        const curDate = "DATE(date)=CURDATE() AND HOUR(date)>=7";
+            "(DATE(date)=SUBDATE(CURDATE(), 1) AND HOUR(date)>=1) OR (DATE(date)=CURDATE() AND HOUR(date)<2)";
+        const curDate = "DATE(date)=CURDATE() AND HOUR(date)>=1";
 
         const region = "SELECT region FROM distributor WHERE did=?";
         const retailer = `SELECT rid FROM retailer WHERE region=(${region})`;
